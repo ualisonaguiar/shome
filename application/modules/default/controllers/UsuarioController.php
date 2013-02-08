@@ -34,6 +34,7 @@ class Default_UsuarioController extends Default_SegurancaController
      */
     public function situacaoAction()
     {
+        $objSession = new Zend_Session_Namespace('Data');
         $this->_helper->viewRenderer->setNoRender();
         $this->_helper->layout->disableLayout();
 
@@ -44,22 +45,22 @@ class Default_UsuarioController extends Default_SegurancaController
             $nUsuario = new NDefault_UsuarioNegocio();
             $nUsuario->alteraSituacao($chvUsuario, $dsStatus);
 
-            echo json_encode(
-                array(
-                    'status' => true,
-                    'mensagem' => 'Situação do usuário alterado com sucesso'
-                )
-            );
+            $objSession->__set('Mensagem', array(
+                'status' => 'alert alert-block alert-success fade in',
+                'mensagem' => 'Situação do usuário alterado com sucesso'
+            ));
         } catch ( Zend_Exception $exc ) {
             $nErro = new NDefault_ErroNegocio();
             $chvErro = $nErro->registraErro($exc);
-            echo json_encode(
-                array(
-                    'status' => false,
-                    'mensagem' => 'Não foi possível alterar a situação.'
-                )
-            );
+
+            $nErro = new NDefault_ErroNegocio();
+            $chvErro = $nErro->registraErro($exc);
+            $objSession->__set('Mensagem', array(
+                'status' => 'alert alert-block alert-error fade in',
+                'mensagem' => 'Não foi possível alterar a situação usuário'
+            ));
         }
+        $this->_redirect('usuario');
     }
 
     /**
@@ -135,24 +136,27 @@ class Default_UsuarioController extends Default_SegurancaController
      */
     public function novoAction()
     {
-        try {
-            $formUsuario = new Form_Usuario();
-            $this->view->formUser = $formUsuario->novo();
-            if ( $this->getRequest()->isPost() ) {
-                $post = $this->_getAllParams();
+        $formUsuario = new Form_Usuario();
+        $this->view->formUser = $formUsuario->novo();
 
-                if ( $formUsuario->isValidNovo($post) ) {
+        if ( $this->getRequest()->isPost() ) {
+            $post = $this->_getAllParams();
+            if ( $formUsuario->isValidNovo($post) ) {
+                $objSession = new Zend_Session_Namespace('Data');
+                try {
                     $post = $formUsuario->novo()->getValidValues($post);
-                    $post['cpf_usuario'] = str_replace('.', '', str_replace('-', '.', $post['cpf_usuario']));
-
                     $nUsuario = new NDefault_UsuarioNegocio();
-                    $novaSenha = str_shuffle(str_shuffle('NoVaSENHA') . rand(1, 9999));
-
-                    if ( $post['acesso_sis'] ) {
-                        $post['ds_senha'] = md5($novaSenha);
-                        $aEmail = explode('@', $post['ds_email']);
-                        $post['ds_login'] = $aEmail[0];
+                    //verifica se existe algum login já cadatrado
+                    $coLogins = $nUsuario->getListagemLogin();
+                    if ( count($coLogins) != 0 ) {
+                        foreach ( $coLogins as $login ) {
+                            if ( $login['ds_login'] == $post['ds_login'] ) {
+                                throw new Zend_Exception('Já existe um usuário com este login');
+                            }
+                        }
                     }
+                    $post['cpf_usuario'] = str_replace('.', '', str_replace('-', '.', $post['cpf_usuario']));
+                    $novaSenha = str_shuffle(str_shuffle('NoVaSENHA') . rand(1, 9999));
 
                     if ( $nUsuario->salvarUsuario($post) ) {
                         if ( $post['acesso_sis'] ) {
@@ -166,26 +170,23 @@ class Default_UsuarioController extends Default_SegurancaController
                             $post['ds_senha'] = md5($post['ds_senha']);
                             NDefault_MensagemNegocio::enviarEmail($mensagem, 'Cadastro de sistema', array($post['ds_email']));
                         }
-                        $objSession = new Zend_Session_Namespace('Data');
+
                         $objSession->__set('Mensagem', array(
                             'status' => 'alert alert-block alert-success fade in',
                             'mensagem' => 'Usuário cadastrado com sucesso.'
                         ));
                         $this->_redirect('usuario');
                     } else {
-                        $this->view->error = "Não foi possível cadastrar";
+                        throw new Zend_Exception('Não foi possível cadastrar');
                     }
-                } else {
+                } catch ( Zend_Exception $exec ) {
+                    $objSession->__set('Mensagem', array(
+                        'status' => 'alert alert-block alert-error fade in',
+                        'mensagem' => $exec->getMessage()
+                    ));
                     $this->view->formUser = $formUsuario->novo()->populate($post);
                 }
             }
-        } catch ( Zend_Exception $exc ) {
-            $this->view->error = array('status' => false, 'mensagem' => $exc->getMessage());
-            $this->view->formUser = $formUsuario->novo()->populate($post);
-        } catch ( Exception $exec ) {
-            $nErro = new NDefault_ErroNegocio();
-            $chvErro = $nErro->registraErro($exec);
-            $this->_redirect(END_WEB . '/error/index/id/' . $chvErro);
         }
     }
 
@@ -211,7 +212,7 @@ class Default_UsuarioController extends Default_SegurancaController
             if ( $form->isValidAlterar($post) ) {
                 $post = $form->alterar($post)->getValidValues($post);
 
-                if ( $post['acesso_sis'] == '1' && is_null($coUsuario[0]['ds_senha']) && is_null($coUsuario[0]['ds_login'])) {
+                if ( $post['acesso_sis'] == '1' && is_null($coUsuario[0]['ds_senha']) && is_null($coUsuario[0]['ds_login']) ) {
                     $post['ds_senha'] = str_shuffle(str_shuffle('NoVaSENHA') . rand(1, 9999));
                     $mensagem = $this->view->partial('usuario/email-cadastro.phtml', array(
                         'nomeUsuario' => $post['nom_usuario'],
@@ -223,7 +224,7 @@ class Default_UsuarioController extends Default_SegurancaController
                     $post['ds_senha'] = md5($post['ds_senha']);
                     NDefault_MensagemNegocio::enviarEmail($mensagem, 'Cadastro no sistema', array($post['ds_email']));
                 }
-                
+
                 unset($post['acesso_sis']);
                 $nUsuario->salvarUsuario($post);
                 $objSession->__set('Mensagem', array(

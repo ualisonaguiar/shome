@@ -5,26 +5,8 @@ $(function(){
      *
      */
   usuario.alteraStatus = function(chv_usuario, status) {
-    $.ajax({
-      type: 'post',
-      data: {
-        chv_usuario: chv_usuario,
-        status: status
-      },
-      url:'usuario/situacao',
-      dataType: 'json',
-      beforeSend: function(){
-        $('#loading').modal('show');
-      },
-      success: function(response){
-        $('#loading').modal('hide');
-        if(response.status != true) {
-          Mensagem.erro(response.mensagem);
-          return false;
-        }
-        Mensagem.sucesso(response.mensagem, true);
-      }
-    });
+    var url = baseUrl + '/usuario/situacao/chv_usuario/' + chv_usuario + '/status/'+status;
+    Mensagem.confirmacao("Deseja alterar a situação deste usuário?", url);
   }
 
   /**

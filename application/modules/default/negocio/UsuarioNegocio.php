@@ -206,4 +206,14 @@ class NDefault_UsuarioNegocio extends PDefault_Models_Usuario
         }
     }
 
+    /**
+     * Método que retorna os logins cadastrados
+     */
+    public function getListagemLogin()
+    {
+        return $this->select()
+            ->from($this->_schema.'.'.$this->_name, array('ds_login'))
+            ->query()
+            ->fetchAll();
+    }
 }
