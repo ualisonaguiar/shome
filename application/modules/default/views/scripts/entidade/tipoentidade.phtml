@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="clearfix"></div>
+    <div class="container-fluid">
+        <h2>Listagem de tipo de entidade</h2>
+        <div class="pull pull-right">
+            <a type="submit" class="btn btn-primary add-tp-entidade" href="#">
+                <i class="icon-white icon-plus-sign"></i>
+                Novo
+            </a>
+            <a href="#" class="btn btn-danger" id="excluir_entidade">
+                <i class="icon-white icon-trash"></i>
+                Excluir
+            </a>
+        </div>
+        <br><br>
+        <?php if(count($this->coEntidade) != 0) : ?>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Tipo de entidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($this->coEntidade as $key => $entidade) : ?>
+                <tr>
+                        <th>
+                            <input type="checkbox" name="chv_tp_pessoa" value="<?php echo $key; ?>">
+                        </th>
+                        <th>
+                            <a href="#" id="edit_tp_entidade" values="<?php echo $key; ?>">
+                                <?php echo $entidade; ?>
+                            </a>
+                        </th>
+                    </tr>
+                <?php endforeach;?>
+            </tbody>
+        </table>
+        <?php else : ?>
+        <p><strong>Não existe tipo de conta cadastrada</strong></p>
+        <?php endif;?>
+    </div>
+</div>
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/includes/entidade/tipoentidade.js"); ?>"></script>

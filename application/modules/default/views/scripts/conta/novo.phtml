@@ -1,0 +1,51 @@
+<script>
+    $(function(){
+        $('#informacao-label').addClass('hide');
+        $('#vencimento-label').addClass('hide');
+        $('#pagamento-label').addClass('hide');
+        $('#observacao-label').addClass('hide');
+    });
+</script>
+<html lang="pt-br">
+    <div class="container">
+        <div class="container-fluid">
+            <h1>Cadastro de conta</h1>
+            <div class="clearfix">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active"><a data-toggle="tab" href="#home">Informação da conta</a></li>
+                    <li class=""><a data-toggle="tab" href="#vencimento">Vencimento</a></li>
+                    <li class=""><a data-toggle="tab" href="#pagamento">Pagamento</a></li>
+                    <li class=""><a data-toggle="tab" href="#observacao">Observações</a></li>
+                </ul>                
+            </div>
+            <form method="post" action="" enctype="multipart/form-data">
+                <div class="pull pull-right">
+                    <br><br>
+                    <button type="submit" class="btn btn-success"><i class="icon-plus-sign icon-white"></i>&nbsp;Cadastrar</button>
+                    <a class="btn" href="<?php echo $this->baseUrl('conta'); ?>"><i class="icon-home"></i>&nbsp;Voltar</a>
+                    <br><br>
+                </div>                
+                <div class="tab-content container-fluid" id="myTabContent">
+                    <div id="home" class="tab-pane fade active in">
+                        <legend>Informações da conta</legend>
+                        <?php echo $this->form->getDisplayGroup('informacao'); ?>
+                    </div>
+                    <div id="vencimento" class="tab-pane fade">
+                        <legend>Informações sobre vencimento</legend>
+                        <?php echo $this->form->getDisplayGroup('vencimento'); ?>
+                        <?php echo $this->form->getDisplayGroup('gerarParcelas'); ?>
+                    </div>
+                    <div id="pagamento" class="tab-pane fade">
+                        <legend>Informações sobre pagamento</legend>
+                        <?php echo $this->form->getDisplayGroup('pagamento'); ?>
+                    </div>
+                    <div id="observacao" class="tab-pane fade">
+                        <legend>Observações</legend>
+                        <?php echo $this->form->getDisplayGroup('observacao'); ?>
+                    </div>
+                </div>   
+            </form>            
+        </div>
+    </div>
+</html>
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/includes/conta/manter.js"); ?>"></script>

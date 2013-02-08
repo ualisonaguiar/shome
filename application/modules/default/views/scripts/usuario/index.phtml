@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="container-fluid">
+        <h2>Listagem de usuários</h2>
+        <div class="pull-left">
+            <div class="pull pull-right">
+                <a class="btn btn-primary" href="<?php echo $this->baseUrl('usuario/novo'); ?>">
+                    <i class="icon-white icon-plus-sign"></i>
+                    Novo
+                </a>
+                <button type="submit" class="btn btn-danger" id="excluir_usuario">
+                    <i class="icon-white icon-trash"></i>
+                    Excluir
+                </button>
+            </div>
+            <hr>
+            <?php if ( $this->coUsuario ) : ?>
+            <form method="post">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Login</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ( $this->coUsuario as $usuario ) : ?>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" name="chv_usuario" id="chv_usuario" value="<?php echo $usuario['chv_usuario']; ?>">
+                                    </th>
+                                    <th>
+                                        <a href="<?php echo $this->baseUrl('usuario/alterar/id/' . $usuario['chv_usuario']); ?>">
+                                            <?php echo $usuario['nom_usuario']; ?>
+                                        </a>
+                                    </th>
+                                    <th><?php echo $usuario['ds_email']; ?></th>
+                                    <th><?php echo ($usuario['ds_login']) ? $usuario['ds_login'] : ' - '; ?></th>
+                                    <th>
+                                        <?php if ( $usuario['ds_status'] == false ) : ?>
+                                            <i class="btExcluir altera-status" value="1" ref="<?php echo $usuario['chv_usuario']; ?>" title="Ativar"></i>
+                                        <?php else: ?>
+                                            <i class="btAtivo altera-status" value="0" ref="<?php echo $usuario['chv_usuario']; ?>" title="Inativar"></i>
+                                        <?php endif; ?>
+                                        <a href="<?php echo $this->baseUrl('usuario/alterar/id/' . $usuario['chv_usuario']); ?>" class="btEditar" title="Editar"></a>
+                                        <?php if ( !empty($usuario['ds_login']) ) : ?>
+                                            <i class="btRefresh" title="Reenviar nova senha" values="<?php echo $usuario['chv_usuario']; ?>"></i>
+                                        <?php endif; ?>
+                                    </th>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </form>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/includes/usuario/index.js"); ?>"></script>

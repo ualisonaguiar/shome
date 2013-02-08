@@ -1,0 +1,166 @@
+<style>
+    #ds_message {
+        max-width: 100em
+    }
+</style>
+<div class="container">
+    <div class="container-fluid">
+        <h2>Gerenciamento de erros</h2>
+        <div class="pull-left">
+            <div class="clearfix">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active"><a data-toggle="tab" href="#abertos">Abertos</a></li>
+                    <li class=""><a data-toggle="tab" href="#fechados">Fechados</a></li>
+                </ul>
+            </div>
+            <div class="tab-content container-fluid" id="myTabContent">
+                <div id="abertos" class="tab-pane fade active in">
+                    <?php if ( count($this->coErrosAbertos) != 0 ) : ?>
+                        <legend>Listagem de erros ativos</legend>
+                        <strong style="background: red">Total de erros: <?php echo count($this->coErrosAbertos); ?></strong>
+                        <div class="pull pull-right">
+                            <button class="btn btn-success" id="resolver"><i class="icon-white icon-plus-sign"></i>&nbsp;Resolvido</button>
+                        </div>
+                        <br>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Mensagem de erro</th>
+                                    <th>Data do erro</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ( $this->coErrosAbertos as $erros ) : ?>
+                                    <tr>
+                                        <th>
+                                            <input type="checkbox" name="ch_erro" value="<?php echo $erros['erro']['chv_erro']; ?>">
+                                        </th>
+                                        <th id="ds_message">
+                                            <a id="fechado" value="<?php echo $erros['erro']['chv_erro']; ?>" href="<?php echo $this->baseUrl('gerenciamento/detalheserro/chv_erro/' . $erros['erro']['chv_erro']); ?>">
+                                                <i class="icon-eye-open" title="Ver detalhes do erro"></i>
+                                            </a>
+                                            &nbsp;&nbsp;<?php echo $erros['erro']['ds_message']; ?>
+                                        </th>
+                                        <th>
+                                            <?php echo $erros['erro']['dat_log']; ?>
+                                        </th>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <p><label>Não existem erros gerados no sistema</label></p>
+                    <?php endif; ?>
+                </div>
+                <div id="fechados" class="tab-pane fade">
+                    <?php if ( count($this->coErrosFechados) != 0 ) : ?>
+                        <legend>Listagem de erros resolvidos</legend>
+                        <strong style="background: #8eb92a">Total de erros resolvidos: <?php echo count($this->coErrosFechados); ?></strong>
+                        <br>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Mensagem de erro</th>
+                                    <th>Data do erro</th>
+                                    <th>Data da resolução</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ( $this->coErrosFechados as $erros ) : ?>
+                                    <tr>
+                                        <th id="ds_message">
+                                            <?php echo $erros['erro']['ds_message']; ?>
+                                        </th>
+                                        <th>
+                                            <?php echo $erros['erro']['dat_log']; ?>
+                                        </th>
+                                        <th>
+                                            <?php echo $erros['erro']['dat_correcao']; ?>
+                                        </th>
+                                        <th>
+                                            <a id="aberto" value="<?php echo $erros['erro']['chv_erro']; ?>" href="<?php echo $this->baseUrl('gerenciamento/detalheserro/chv_erro/' . $erros['erro']['chv_erro']); ?>">
+                                                <i class="icon-eye-open" title="Ver detalhes do erro"></i>
+                                            </a>
+                                        </th>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <p><label>Não existem erros solucionados no sistema</label></p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_resolver" class="modal hide fade" style="width: auto; height: auto;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Resolver o erro</h3>
+    </div>
+    <form id="formResolverErro" method="post" action="<?php echo $this->baseUrl('gerenciamento/resolveerro'); ?>">
+        <div class="modal-body">
+            <input type="hidden" id="chv_erro_modal" name="chv_erro" value="">
+            <label>Solução proposta</label>
+            <textarea id="ds_solucao" name="ds_solucao" style="width: 517px; height: 331px;" class="ckeditor"></textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+            <input type="submit" class="btn btn-primary salvar-tp-conta" value="Salvar">
+        </div>
+    </form>
+</div>
+
+<div id="modal_detalhes" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Detalhes do erro</h3>
+    </div>
+    <div class="clearfix">
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="active"><a data-toggle="tab" href="#erro">Informação do erro</a></li>
+            <li><a data-toggle="tab" href="#tracert">Caminhos de execução</a></li>
+            <li class="hide"><a data-toggle="tab" href="#resolucao">Informação da resolução</a></li>
+        </ul>
+    </div>
+    <div class="modal-body">
+        <div class="tab-content container-fluid" id="myTabContent">
+            <div id="erro" class="tab-pane fade active in">
+                <p>Mensagem do erro: <strong id="Emensagem"></strong></p>
+                <p>Caminho do arquivo: <strong id="Earquivo"></strong></p>
+                <p>Linha: <strong id="Elinha"></strong></p>
+                <p>Data do erro: <strong id="Edtlog"></strong></p>
+            </div>
+
+            <div id="tracert" class="tab-pane fade">
+                <table class="table table-striped">
+                    <thead>
+                    <th>#</th>
+                    <th>Classe</th>
+                    <th>Método</th>
+                    <th>Linha</th>
+                    <th>Arquivo</th>
+                    </thead>
+                    <tbody class="tracert">
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="resolucao" class="tab-pane fade">
+                <p>Solução: <strong id="Esolucao"></strong></p>
+                <p>Data da correção: <strong id="Edtcorrecao"></strong></p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/includes/gerenciamento/erro/index.js"); ?>"></script>

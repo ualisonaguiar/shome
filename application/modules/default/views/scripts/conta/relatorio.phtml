@@ -1,0 +1,103 @@
+<script>
+    $(function(){
+        $('#informacaoConta-label').addClass('hide');
+        $('#dataVencimento-label').addClass('hide');
+        $('#dataPagamento-label').addClass('hide');
+    });
+</script>
+<html lang="pt-br">
+    <div class="container">
+        <div class="container-fluid">
+            <h1>Relatório das contas</h1>
+            <?php if ( !empty($this->msg) ) : ?>
+                <div class="alert alert-block alert-error fade in">
+                    <button data-dismiss="alert" class="close" type="button">×</button>
+                    <p><?php echo $this->msg; ?></p>
+                </div>
+            <?php endif; ?>
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a data-toggle="tab" href="#home">Informação da conta</a></li>
+                <li class=""><a data-toggle="tab" href="#vencimento">Vencimento</a></li>
+                <li class=""><a data-toggle="tab" href="#pagamento">Pagamento</a></li>
+                <?php if ( !empty($this->resultados) ) : ?>
+                    <li class=""><a data-toggle="tab" href="#resultado">Resultado da pesquisa</a></li>
+                <?php endif; ?>
+            </ul>
+            <form method="post">
+                <div class="pull pull-right">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="icon-search icon-white"></i>&nbsp;
+                        Pesquisa
+                    </button>
+                    <button type="reset" class="btn">
+                        <i class="icon-refresh"></i>&nbsp;
+                        Limpar
+                    </button>
+                </div>
+                <div class="tab-content container-fluid" id="myTabContent">
+                    <div id="home" class="tab-pane fade active in">
+                        <legend>Informações da conta</legend>
+                        <?php echo $this->form->getDisplayGroup('informacaoConta'); ?>
+                    </div>
+                    <div id="vencimento" class="tab-pane fade">
+                        <legend>Informações sobre vencimento</legend>
+                        <?php echo $this->form->getDisplayGroup('dataVencimento'); ?>
+                    </div>
+                    <div id="pagamento" class="tab-pane fade">
+                        <legend>Informações sobre pagamento</legend>
+                        <?php echo $this->form->getDisplayGroup('dataPagamento'); ?>
+                    </div>
+                    <div id="resultado" class="tab-pane fade">
+                        <legend>Resultado da pesquisa</legend>
+                        <?php if ( count($this->resultados) != 0 ) : ?>
+                            <script type="text/javascript">
+                                $(function(){
+                                    $('#myTab a[href="#resultado"]').tab('show');
+                                });
+                            </script>
+                            <label>Quantidade: <?php echo count($this->resultados); ?></label>
+                            <label>Total das contas: R$ <?php echo $this->totalConta; ?></label>
+                            <?php if ( !empty($this->totalPago) ) : ?>
+                                <label>Total pago: R$ <?php echo $this->totalPago; ?></label>
+                            <?php endif; ?>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nome do arquivo</th>
+                                        <th>Entidade</th>
+                                        <th>Tipo da conta</th>
+                                        <th>Parcela</th>
+                                        <th>Data de vencimento</th>
+                                        <th>Data de pagamento</th>
+                                        <th>Valor da fatura</th>
+                                        <th>Valor pago</th>
+                                    </tr>
+                                </thead>
+                                <tbody role="alert" aria-live="polite" aria-relevant="all">
+                                    <?php foreach ( $this->resultados as $resultado ) : ?>
+                                        <tr>
+                                            <td>
+                                                <a href="<?php echo $this->baseUrl('conta/editar/id/' . $resultado['chv_conta']); ?>">
+                                                    <?php echo $resultado['nomeConta']; ?>
+                                                </a>
+                                            </td>
+                                            <td><?php echo $resultado['pj']; ?></td>
+                                            <td><?php echo $resultado['tp']; ?></td>
+                                            <td>
+                                                <?php echo (empty($resultado['nr_parcela']) || $resultado['nr_parcela'] == 0) ? '-' : $resultado['nr_parcela']; ?>
+                                            </td>
+                                            <td><?php echo $resultado['dataVencimento']; ?></td>
+                                            <td><?php echo $resultado['dataPagamento']; ?></td>
+                                            <td>R$ <?php echo number_format($resultado['valorConta'], 2, ',', ' '); ?></td>
+                                            <td>R$ <?php echo ($resultado['valorPago'] == '0,00') ? '-' : number_format($resultado['valorPago'], 2, ',', ' '); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</html>

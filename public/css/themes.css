@@ -1,0 +1,39 @@
+/* Conteúdo */
+.container {
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 25px auto auto auto;
+
+  background: #f9f9f9;
+
+  border: 1px solid #d5d5d5;
+
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+
+  box-shadow:  0px 0px 2px #dadada, inset 0px -3px 0px #e6e6e6;
+}
+
+.btEditar, .btExcluir, .btAtivo, .btRefresh {
+  background:url(../img/icones.gif) no-repeat;
+  display:block;
+  float:left;
+  height:16px;
+  overflow:hidden;
+  text-indent:-50em;
+  width:16px;
+}
+.btEditar {
+  background-position:-21px -41px;
+}
+.btExcluir {
+  background-position:-1px -61px;
+}
+.btAtivo {
+  background-position:-1px -21px;
+}
+.btRefresh {
+  background-position:-21px -1px;
+}

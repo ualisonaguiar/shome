@@ -1,0 +1,81 @@
+<div class="container">
+    <h2>Gerenciamento de armazenamento</h2>
+    <div class="container-fluid">
+        <div class="clearfix">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a data-toggle="tab" href="#status">Inicio</a></li>
+                <li class=""><a data-toggle="tab" href="#arquivos">Arquivos</a></li>
+            </ul>
+        </div>
+        <div class="tab-content container-fluid" id="myTabContent">
+            <div id="status" class="tab-pane fade active in">
+                <p>Tamanho da base de dados: <?php echo $this->espacoBD; ?></p>
+                <details>
+                    <summary>
+                        Tamanho do diretório de arquivos: <?php echo $this->espacoFile['total_']; ?>
+                    </summary>
+                    <dl>
+                        <?php if ( array_key_exists('files', $this->espacoFile) ) : ?>
+                            <?php foreach ( $this->espacoFile['files'] as $key => $files ) : ?>
+                                <dt><?php echo $files['type']; ?>:</dt>
+                                <dd>
+                                    <progress
+                                        max="<?php echo $this->espacoFile['total']; ?>"
+                                        value="<?php echo $files['total']; ?>">
+                                    </progress>&nbsp;<?php echo $files['total_']; ?>
+                                </dd>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </dl>
+                </details>
+            </div>
+            <div id="arquivos" class="tab-pane fade">
+                <?php if ( count($this->coArquivos) != 0 ) : ?>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Caminho</th>
+                                <th>Extensão</th>
+                                <th>Existência do arquivo</th>
+                                <th>MD5</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ( $this->coArquivos as $arquivos ) : ?>
+                                <tr>
+                                    <th>
+                                        <?php if (!file_exists($arquivos['caminho_file']) ) { ?>
+                                        <img src="<?php echo $this->baseUrl('/public/img/flag-vermelho'); ?>">
+                                        <?php } ?>
+                                        <?php echo $arquivos['caminho_file']; ?>
+                                    </th>
+                                    <th>
+                                        <?php echo $arquivos['extensao_file']; ?>
+                                    </th>
+                                    <th>
+                                        <?php if ( file_exists($arquivos['caminho_file']) ) : ?>
+                                            <i class="icon-ok-circle"></i>
+                                        <?php else : ?>
+                                            <i class="icon-ban-circle"></i>
+                                        <?php endif; ?>
+                                    </th>
+                                    <th>
+                                        <?php if ( file_exists($arquivos['caminho_file']) ) : ?>
+                                            <?php if ( md5_file($arquivos['caminho_file']) == $arquivos['md5'] ) : ?>
+                                                <i class="icon-ok-circle"></i>
+                                            <?php else : ?>
+                                                <i class="icon-ban-circle"></i>
+                                            <?php endif; ?>
+                                        <?php else : ?>
+                                            <i class="icon-ban-circle"></i>
+                                        <?php endif; ?>
+                                    </th>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>

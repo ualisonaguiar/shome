@@ -1,0 +1,32 @@
+<div class="pull form-actions">
+    <h2>Log de erro</h2>
+    <p><b>Caminho do arquivo:</b> <?php echo $this->ds_file; ?></p>
+    <p><b>Linha:</b> <?php echo $this->ds_line; ?></p>
+    <p><b>Mensagem: </b><i><?php echo $this->ds_message; ?></i></p>
+    <p><b>Data do log: </b> <?php echo $this->dat_log; ?></p>
+    <h3>Caminhos de execução</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Classe</th>
+                <th>Método</th>
+                <th>Linha</th>
+                <th>Arquivo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if ( count($this->aTracert) != 0 ) : ?>
+                <?php foreach ( $this->aTracert as $key => $tracert ) : ?>
+                    <tr>
+                        <td><?php echo $key; ?></td>
+                        <td><?php echo $tracert['ds_class']; ?></td>
+                        <td><?php echo $tracert['ds_function']; ?></td>
+                        <td><?php echo $tracert['ds_line']; ?></td>
+                        <td><?php echo $tracert['ds_file']; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </tbody>
+    </table>
+</div>

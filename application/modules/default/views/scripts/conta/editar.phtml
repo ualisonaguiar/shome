@@ -1,0 +1,84 @@
+<script>
+    $(function(){
+        $('#informacao-label').addClass('hide');
+        $('#vencimento-label').addClass('hide');
+        $('#pagamento-label').addClass('hide');
+        $('#observacao-label').addClass('hide');
+    });
+</script>
+<html lang="pt-br">
+    <div class="container">
+        <div class="container-fluid">
+            <h1>Cadastro de conta</h1>
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a data-toggle="tab" href="#home">Informação da conta</a></li>
+                <li class=""><a data-toggle="tab" href="#vencimento">Vencimento</a></li>
+                <li class=""><a data-toggle="tab" href="#pagamento">Pagamento</a></li>
+                <li class=""><a data-toggle="tab" href="#observacao">Observações</a></li>
+                <li class=""><a data-toggle="tab" href="#arquivos">Arquivos</a></li>
+            </ul>
+
+            <form method="post" action="" enctype="multipart/form-data">
+                <div class="pull pull-right">
+                    <br><br>
+                    <button type="submit" class="btn btn-success"><i class="icon-ok-sign icon-white"></i>&nbsp;Salvar</button>
+                    <a class="btn" href="<?php echo $this->baseUrl('conta'); ?>"><i class="icon-home"></i>&nbsp;Voltar</a>
+                    <br><br>
+                </div>
+                <input type="hidden" id="chv_conta" name="chv_conta" value="<?php echo $this->chvConta; ?>">
+                <div class="tab-content container-fluid" id="myTabContent">
+                    <div id="home" class="tab-pane fade active in">
+                        <legend>Informações da conta</legend>
+                        <?php echo $this->form->getDisplayGroup('informacao'); ?>
+                    </div>
+                    <div id="vencimento" class="tab-pane fade">
+                        <legend>Informações sobre vencimento</legend>
+                        <?php echo $this->form->getDisplayGroup('vencimento'); ?>
+                    </div>
+                    <div id="pagamento" class="tab-pane fade">
+                        <legend>Informações sobre pagamento</legend>
+                        <?php echo $this->form->getDisplayGroup('pagamento'); ?>
+                    </div>
+                    <div id="observacao" class="tab-pane fade">
+                        <legend>Observações</legend>
+                        <?php echo $this->form->getDisplayGroup('observacao'); ?>
+                    </div>
+                    <div id="arquivos" class="tab-pane fad">
+                        <legend>Arquivos postados</legend>
+                        <?php if ( count($this->coAnexos) != 0 ) : ?>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nome do arquivo</th>
+                                        <th>Tipo da conta</th>
+                                        <th>Tamanho</th>
+                                        <th>Data de atualização</th>
+                                        <th>Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody role="alert" aria-live="polite" aria-relevant="all">
+                                    <?php foreach ( $this->coAnexos as $anexo ) : ?>
+                                        <tr class="odd gradeU">
+                                            <td>
+                                                <a href="<?php echo $this->baseUrl('anexo/download/id/' . $anexo['chv_file']); ?>">
+                                                    <?php echo $anexo['nm_file']; ?>
+                                                </a>
+                                            </td>
+                                            <td><?php echo $anexo['tipoConta']; ?></td>
+                                            <td><?php echo $anexo['size_file']; ?></td>
+                                            <td><?php echo $anexo['dat_inclusao']; ?></td>
+                                            <td>
+                                                <a href="#" value="<?php echo $anexo['chv_file']; ?>" class="btExcluir" title="Editar"></a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</html>
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/includes/conta/manter.js"); ?>"></script>

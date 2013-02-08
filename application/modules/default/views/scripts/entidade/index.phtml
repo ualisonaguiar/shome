@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="clearfix"></div>
+    <div class="container-fluid">
+        <h2>Listagem de entidades</h2>
+        <div class="pull pull-right">
+            <a type="submit" class="btn btn-primary" href="<?php echo $this->baseUrl('entidade/novo'); ?>">
+                <i class="icon-white icon-plus-sign"></i>
+                Novo
+            </a>
+            <button type="submit" class="btn btn-danger" id="excluir_entidade">
+                <i class="icon-white icon-trash"></i>
+                Excluir
+            </button>
+        </div>
+        <br><br>
+        <div class="pull-left">
+            <?php if ( count($this->coEntidades) != 0 ) : ?>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nome Fantasia</th>
+                            <th>Site</th>
+                            <th>Ramo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ( $this->coEntidades as $entidade ) : ?>
+                            <tr class="odd gradeU">
+                                <th>
+                                    <input type="checkbox" name="chv_pessoa_juridica" id="chv_pessoa_juridica" value="<?php echo $entidade['chv_pessoa_juridica']; ?>">
+                                </th>
+                                <th>
+                                    <a href="#" id="detalhes_entidade" value="<?php echo $entidade['chv_pessoa_juridica']; ?>">
+                                        <?php echo $entidade['nom_fantasia']; ?>
+                                    </a>
+                                </th>
+                                <th>
+                                    <?php echo $entidade['ds_site']; ?>
+                                </th>
+                                <th>
+                                    <?php echo $entidade['ds_tipo_pessoa']; ?>
+                                </th>
+                                <th>
+                                    <?php if ( $entidade['ds_status'] == false ) : ?>
+                                        <i class="btExcluir altera-status" value="1" title="Ativar" rel="<?php echo $entidade['chv_pessoa_juridica']; ?>"></i>
+                                    <?php else: ?>
+                                        <i class="btAtivo altera-status" value="0" title="Inativar" rel="<?php echo $entidade['chv_pessoa_juridica']; ?>"></i>
+                                    <?php endif; ?>
+                                    <a href="<?php echo $this->baseUrl('entidade/alterar/id/' . $entidade['chv_pessoa_juridica']); ?>" class="btEditar" title="Editar">
+                                        <?php echo $entidade['nom_fantasia']; ?>
+                                    </a>
+                                    &nbsp;
+                                </th>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else : ?>
+            <strong>Não existem entidade cadastrada.</strong>
+            <?php endif; ?>
+        </div>
+    </div>
+    <br>
+</div>
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/includes/entidade/index.js"); ?>"></script>

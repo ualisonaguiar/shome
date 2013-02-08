@@ -1,0 +1,114 @@
+<?php if ( !empty($this->retorno->mensagem) ) : ?>
+    <div class="<?php echo $this->retorno->status; ?>">
+        <button data-dismiss="alert" class="close" type="button">×</button>
+        <p><?php echo $this->retorno->mensagem; ?></p>
+    </div>
+<?php endif; ?>
+<div id="loading" class="modal hide fade">
+    <p>
+        <img src="<?php echo $this->baseUrl('/public/img/load.gif'); ?>">
+        <strong>Aguarde, enquanto a requisição e processada</strong>
+    </p>
+</div>
+
+<div id="modal_alterar_senha" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Alteração de senha</h3>
+    </div>
+    <form id="formAlterarSenhaUsuario" action="#">
+        <div class="modal-body">
+            <?php echo $this->formAlterarSenha; ?>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+            <button type="submit" class="btn btn-primary alterar-senha-usuario"><i class="icon-ok-sign icon-white"></i>&nbsp;Salvar</button>
+        </div>
+    </form>
+</div>
+
+<div id="modal_detalhesEntidade" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Informações da entidade</h3>
+    </div>
+    <div class="modal-body">
+        <label>
+            <strong>Nome fantasia:</strong>
+            <div id="entidadeFantasia"></div>
+        </label>
+        <label>
+            <strong>Razão social: </strong>
+            <div id="entidadeRazao"></div>
+        </label>
+        <label>
+            <strong>CNPJ:</strong>
+            <div id="entidadeCNPJ"></div>
+        </label>
+        <label>
+            <strong>Site:</strong>
+            <div id="entidadeSite"></div>
+        </label>
+        <hr>
+        <label><h3>Informações de endereço</h3></label>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Endereço</th>
+                    <th>Telefone Principal</th>
+                    <th>Telefone Secundário</th>
+                </tr>
+            </thead>
+            <tbody class="entidadeEndereco">
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+    </div>
+</div>
+
+<div id="modal_add_tp_conta" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Cadastro de tipo conta</h3>
+    </div>
+    <form id="formAddTipoConta" action="#">
+        <div class="modal-body">
+            <input type="hidden" id="chv_tp_conta" name="chv_tp_conta">
+            <div class="modal-body">
+                <p>Informe o novo tipo de conta:</p>
+                <input type="text" class="input-xlarge" required="true" name="nom_tipo" min="1" maxlength="100" id="nom_tipo">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+            <input type="submit" class="btn btn-primary salvar-tp-conta" value="Salvar">
+        </div>
+    </form>
+</div>
+
+<div id="modal_add_tp_entidade" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Cadastro de tipo entidade</h3>
+    </div>
+    <form id="formAddTipoEntidade" action="#">
+        <div class="modal-body">
+            <input type="hidden" id="chv_tp_entidade" name="chv_tp_entidade">
+            <div class="modal-body">
+                <p>Informe o novo tipo de entidade:</p>
+                <input type="text" class="input-xlarge" required="true" name="ds_tipo_pessoa" min="1" maxlength="100" id="ds_tipo_pessoa">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+            <button type="submit" class="btn btn-primary salvar-tp-conta" ><i class="icon-white icon-plus-sign"></i>&nbsp;Salvar</button>
+        </div>
+    </form>
+</div>
+
+<div id="mensagem-alerta" title="">
+    <p style="block"></p>
+</div>

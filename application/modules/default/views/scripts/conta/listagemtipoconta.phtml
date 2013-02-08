@@ -1,0 +1,86 @@
+<html lang="pt-br">
+    <div class="container">
+        <div class="container-fluid">
+            <h1>Tipos de conta</h1>
+            <div class="pull pull-right">
+                <a type="submit" class="btn btn-primary add-tp-conta" href="#">
+                    <i class="icon-white icon-plus-sign"></i>
+                    Novo
+                </a>
+                <button type="submit" class="btn btn-danger" id="excluir_conta">
+                    <i class="icon-white icon-trash"></i>
+                    Excluir
+                </button>
+            </div>
+            <br>
+            <hr>
+            <?php if ( count($this->conTipoContas) != 0 ) : ?>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Tipo de conta</th>
+                            <th>Contas vinculadas</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody role="alert" aria-live="polite" aria-relevant="all">
+                        <?php foreach ( $this->conTipoContas as $tipoContas ) : ?>
+                            <tr class="odd gradeU">
+                                <th>
+                                    <input type="checkbox" name="chv_conta" value="<?php echo $tipoContas['chv_tp_conta']; ?>">
+                                </th>
+                                <th>
+                                    <?php echo $tipoContas['nom_tipo']; ?>
+                                    <br>
+                                    <a class="button ver-detalhes"><i class="icon-folder-close"></i>Ver contas</a>
+                                    <?php if ( array_key_exists('contas', $tipoContas) ) : ?>
+                                        <table class="table table-striped hide">
+                                            <thead>
+                                            <th>Nome da conta</th>
+                                            <th>Entidade</th>
+                                            <th>Data de vencimento</th>
+                                            <th>Data de pagamento</th>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ( $tipoContas['contas'] as $contas ) : ?>
+                                                    <tr>
+                                                        <th>
+                                                            <a href="<?php echo $this->baseUrl('conta/editar/id/' . $contas['chv_conta']); ?>" target="_blank">
+                                                                <?php echo $contas['nomeConta']; ?>
+                                                            </a>
+                                                        </th>
+                                                        <th>
+                                                            <a href="#" id="detalhes_entidade" value="<?php echo $contas['chv_pessoa_juridica']; ?>">
+                                                                <?php echo $contas['pj']; ?>
+                                                            </a>
+                                                        </th>
+                                                        <th>
+                                                            <?php echo $contas['dataVencimento']; ?>
+                                                        </th>
+                                                        <th>
+                                                            <?php echo $contas['dataPagamento']; ?>
+                                                        </th>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    <?php endif; ?>
+                        </th>
+                        <th>
+                            <?php echo $tipoContas['quantidade']; ?>
+                        </th>
+                        <th>
+                            <a href="#" value="<?php echo $tipoContas['chv_tp_conta']; ?>" class="btEditar" title="Editar"></a>
+                        </th>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else : ?>
+                <strong>Não existe contas a vencer</strong>
+            <?php endif; ?>
+        </div>
+    </div>
+</html>
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/includes/conta/tipoconta.js"); ?>"></script>

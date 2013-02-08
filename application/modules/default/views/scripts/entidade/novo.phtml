@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <div class="container">
+        <h1>Cadastro de entidades</h1>
+        <div id="btn" class="">
+            <a href="<?php echo $this->baseUrl('entidade'); ?>" class="btn"><i class="icon-home"></i>Voltar</a>
+        </div>
+        <div class="container-fluid">
+            <?php echo $this->form; ?>
+        </div>
+    </div>
+
+    <div id="modal_addEndereco" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Adicionar endereço</h3>
+        </div>
+        <form id="adicionarEndereco">
+            <div class="modal-body">
+                <label>
+                    <strong>Informe o CEP da entidade:</strong>
+                    <input type="text" id="dsCep" name="dsCep" class="input-medium cep" required="true">
+                    <button id="addEnd" class="btn btn-small"><i class="icon-user"></i>Buscar...</button>
+                </label>
+                <div id="resultPesquisaCep" class="hide">
+                    <center><h2>Resultada da pesquisa do CEP</h2></center>
+                    <label>Tipo logradouro</label>
+                    <input type="text" id="tipo_logradouro" name="tipo_logradouro" class="input-xlarge" required="true">
+                    <label>Logradouro</label>
+                    <input type="text" id="logradouro" name="logradouro" class="input-xlarge" required="true">
+                    <label>Complemento</label>
+                    <input type="text" id="complemento" name="complemento" class="input-xlarge" required="false">
+                    <label>Bairro</label>
+                    <input type="text" id="bairro" name="bairro" class="input-xlarge" required="true">
+                    <label>Cidade/Estado</label>
+                    <div id="cidade">
+                        <input type="hidden" id="chv_cidade" name="chv_cidade" value="">
+                        <label></label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                <a id="salvarEndereco" class="btn btn-success hide" href=""><i class="icon-white icon-plus-sign"></i>&nbsp;Salvar</a>
+            </div>
+        </form>
+    </div>
+</html>
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/includes/entidade/manter.js"); ?>"></script>

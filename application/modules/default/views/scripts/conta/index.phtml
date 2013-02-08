@@ -1,0 +1,102 @@
+<style>
+    select option {
+        padding:10px;
+    }
+</style>
+<html lang="pt-br">
+    <div class="container">
+        <div class="container-fluid">
+            <h1>Listagem de contas</h1>
+            <div class="pull pull-right">
+                <a type="submit" class="btn btn-primary" href="<?php echo $this->baseUrl('conta/novo'); ?>">
+                    <i class="icon-white icon-plus-sign"></i>
+                    Novo
+                </a>
+                <button type="submit" class="btn btn-danger" id="excluir_conta">
+                    <i class="icon-white icon-trash"></i>
+                    Excluir
+                </button>
+                <hr>
+            </div>
+            <?php if ( count($this->coContas) != 0 ) : ?>
+                <div>
+                    <h4>Filtra as contas por:</h4>
+                    <select id="bandeiras">
+                        <option value="0">Todos</option>
+                        <option value="1"style="padding-left: 35px;background:#fff url(<?php echo $this->baseUrl('/public/img/flag-vermelho.png'); ?>) no-repeat;">À vencer</option>
+                        <option value="2"style="padding-left: 35px;background:#fff url(<?php echo $this->baseUrl('/public/img/flag-amarela.png'); ?>) no-repeat;">Dentro do prazo</option>
+                        <option value="3"style="padding-left: 35px;background:#fff url(<?php echo $this->baseUrl('/public/img/flag-verde.png'); ?>) no-repeat;">Futuras</option>
+                    </select>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nome da Conta</th>
+                            <th>Tipo da conta</th>
+                            <th>Entidade</th>
+                            <th>Data de vencimento</th>
+                            <th>Valor da conta</th>
+                            <th>Parcela</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ( $this->coContas as $tipoContas ) : ?>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="chv_conta" value="<?php echo $tipoContas['chv_conta']; ?>">
+                                    <?php
+                                    $dI = date('d-m-Y');
+                                    list($d, $m, $y) = explode('/', $tipoContas['dataVencimento']);
+
+                                    $dI = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+                                    $dF = mktime(0, 0, 0, $m, $d, $y);
+
+                                    $diferenca = $dF - $dI;
+                                    $dias = (int) floor($diferenca / (60 * 60 * 24));
+
+                                    if ( $dias < 0 ) {
+                                        echo "<img id='flag-vermelho' src=" . $this->baseUrl('/public/img/flag-vermelho.png') . ">";
+                                    } elseif ( $dias >= 0 && $dias <= 15 ) {
+                                        echo "<img id='flag-amarela' src=" . $this->baseUrl('/public/img/flag-amarela.png') . ">";
+                                    } else {
+                                        echo "<img id='flag-verde' src=" . $this->baseUrl('/public/img/flag-verde.png') . ">";
+                                    }
+                                    ?>
+
+                                </td>
+                                <td>
+                                    <a href="<?php echo $this->baseUrl('conta/editar/id/' . $tipoContas['chv_conta']); ?>">
+                                        <?php echo $tipoContas['nomeConta']; ?>
+                                    </a>
+                                </td>
+                                <td>
+                                    <?php echo $tipoContas['tp']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $tipoContas['pj']; ?>
+                                </td>
+                                <td class="center">
+                                    <?php echo $tipoContas['dataVencimento']; ?>
+                                </td>
+                                <td>
+                                    R$ <?php echo number_format($tipoContas['valorConta'], 2, ',', ' '); ?>
+                                </td>
+                                <td>
+                                    <?php echo (empty($tipoContas['nr_parcela']) || $tipoContas['nr_parcela'] == 0) ? '-' : $tipoContas['nr_parcela']; ?>
+                                </td>
+                                <td>
+                                    <a href="<?php echo $this->baseUrl('conta/editar/id/' . $tipoContas['chv_conta']); ?>" class="btEditar" title="Editar"></a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else : ?>
+                <p>Não existe contas a vencer</p>
+            <?php endif; ?>
+        </div>
+    </div>
+</html>
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/includes/conta/index.js"); ?>"></script>

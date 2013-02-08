@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="container-fluid">
+        <?php if ( !empty($this->error['mensagem']) ) : ?>
+            <div class="alert alert-error">
+                <button data-dismiss="alert" class="close" type="button">×</button>
+                <strong><?php echo $this->error['mensagem']; ?></strong>
+            </div>
+        <?php endif; ?>
+        <h2 class="form-signin-heading">Alteração de dados do usuário</h2>
+        <div id="btn" class="pull pull-right">
+            <a class="btn" href="<?php echo $this->baseUrl('usuario'); ?>"><i class="icon-home"></i>Voltar</a>
+            <?php if(!$this->desabilitaBotao) : ?>
+                <button id="excluir_usuario" class="btn btn-danger"><i class="icon-white icon-trash"></i>Excluir</button>
+            <?php endif; ?>
+        </div>
+        <br>
+        <?php echo $this->formUser; ?>
+    </div>
+</div>
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/includes/usuario/alterar.js"); ?>"></script>
