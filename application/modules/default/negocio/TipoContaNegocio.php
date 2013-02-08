@@ -139,7 +139,7 @@ class NDefault_TipoContaNegocio extends PDefault_Models_TipoConta
             }
             $this->delete(array('chv_tp_conta = ?' => $chvTpConta));
         } catch ( Zend_Db_Exception $exc ) {
-            throw new Zend_Exception($exc->getMessage());
+            throw new Zend_Exception('Esta tipo de conta está vinculada a uma conta');
         }
     }
 

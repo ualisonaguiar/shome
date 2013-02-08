@@ -36,9 +36,11 @@
                                         <?php foreach ( $this->conTipoContas as $tipoCF ) : ?>
                                             <?php if ( $tipoCF['chv_tp_conta_pai'] == $tipoContas['chv_tp_conta'] ) : ?>
                                                 <br>
-                                                <a href="#" value="<?php echo $tipoCF['chv_tp_conta']; ?>" class="btEditar" title="Editar"></a>
+                                                <input type="checkbox" name="chv_conta" value="<?php echo $tipoCF['chv_tp_conta']; ?>">
                                                 &nbsp;
                                                 <?php echo $tipoCF['nom_tipo']; ?>
+                                                &nbsp;
+                                                <a href="#" value="<?php echo $tipoCF['chv_tp_conta']; ?>" class="btEditar" title="Editar"></a>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
                                     </th>

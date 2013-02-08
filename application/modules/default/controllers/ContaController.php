@@ -410,9 +410,11 @@ class Default_ContaController extends Default_SegurancaController
                 '/chv_conta=/', '', $chvConta
             )
         );
+
         $nTipoConta = new NDefault_TipoContaNegocio();
 
         try {
+            $objSession = new Zend_Session_Namespace('Data');
             if ( count($aContasTp) == 0 ) {
                 throw new Zend_Exception(
                     'Não foi informado a chave do tipo da conta'
@@ -422,22 +424,21 @@ class Default_ContaController extends Default_SegurancaController
             foreach ( $aContasTp as $tpConta ) {
                 $nTipoConta->excluir($tpConta);
             }
-            echo json_encode(
-                array(
-                    'status' => true,
-                    'mensagem' => 'Tipo de conta, excluído com sucesso'
-                )
-            );
-        } catch ( Exception $exc ) {
+
+            $objSession->__set('Mensagem', array(
+                'status' => 'alert alert-block alert-success fade in',
+                'mensagem' => 'Tipo de conta, excluído com sucesso'
+            ));
+        } catch ( Zend_Exception $exc ) {
             $nErro = new NDefault_ErroNegocio();
             $chvErro = $nErro->registraErro($exc);
-            echo json_encode(
-                array(
-                    'status' => false,
-                    'mensagem' => $exc->getMessage()
-                )
-            );
+
+            $objSession->__set('Mensagem', array(
+                'status' => 'alert alert-block alert-error fade in',
+                'mensagem' => $exc->getMessage()
+            ));
         }
+        $this->_redirect('conta/listagemtipoconta');
     }
 
     /**

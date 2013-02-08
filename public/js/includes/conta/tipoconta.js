@@ -23,21 +23,24 @@ Conta.incluirTipoConta = function(nom_tipo_conta) {
 }
 
 Conta.exluirTipoConta = function() {
-  $.ajax({
-    type: 'post',
-    data: {
-      chv_contas : $('input:checked').serialize()
-    },
-    url:baseUrl+'/conta/excluirtipoconta/',
-    dataType: 'json',
-    success: function(response){
-      if(response.status != true) {
-        Mensagem.erro(response.mensagem);
-        return false;
-      }
-      Mensagem.sucesso(response.mensagem, true);
-    }
-  });
+  var url = baseUrl + '/conta/excluirtipoconta/chv_contas/' + $('input:checked').serialize();
+  Mensagem.confirmacao("Deseja excluir este tipo de conta?", url);
+//
+//  $.ajax({
+//    type: 'post',
+//    data: {
+//      chv_contas : $('input:checked').serialize()
+//    },
+//    url:baseUrl+'/conta/excluirtipoconta/',
+//    dataType: 'json',
+//    success: function(response){
+//      if(response.status != true) {
+//        Mensagem.erro(response.mensagem);
+//        return false;
+//      }
+//      Mensagem.sucesso(response.mensagem, true);
+//    }
+//  });
 }
 
 Conta.editarTipo = function(chv_tp_conta) {
@@ -71,8 +74,7 @@ $(function(){
     Conta.editarTipo($(this).attr('value'));
   }).on('click','.ver-detalhes', function(){
     var detalhes = $(this).parent().children('table');
-console.debug($(this).last().children('table'));
-return false;
+
     if(detalhes.hasClass('hide')) {
       $(this).children('i').removeClass('icon-folder-close');
       $(this).children('i').addClass('icon-folder-open');
