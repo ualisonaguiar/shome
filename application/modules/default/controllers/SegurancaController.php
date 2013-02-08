@@ -33,6 +33,9 @@ class Default_SegurancaController extends Zend_Controller_Action
                     $this->view->objDadosUsuario = $this->_objDadosUsuario;
                     $form = new Form_Seguranca();
                     $this->view->formAlterarSenha = $form->alteraSenhaUsuario();
+
+                    $tpConta = new NDefault_TipoContaNegocio();
+                    $this->view->tpConta = $tpConta->listagem(null, true);
                 }
                 break;
         }

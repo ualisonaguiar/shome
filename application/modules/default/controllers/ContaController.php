@@ -50,9 +50,10 @@ class Default_ContaController extends Default_SegurancaController
         $form->getElement('nr_parcela')
             ->setAttrib('disabled', true);
         $this->view->form = $form;
-
         if ( $this->getRequest()->isPost() ) {
+            $objSession = new Zend_Session_Namespace('Data');
             $post = $this->getAllParams();
+
             //validando os valores
             if ( $form->isValid($post) ) {
                 $post = $form->getValidValues($post);
@@ -71,7 +72,7 @@ class Default_ContaController extends Default_SegurancaController
                 } else {
                     $this->salvar($post);
                 }
-                $objSession = new Zend_Session_Namespace('Data');
+
                 $objSession->__set(
                     'Mensagem', array(
                     'status' => 'alert alert-block alert-success fade in',
@@ -80,6 +81,12 @@ class Default_ContaController extends Default_SegurancaController
                 );
                 $this->_redirect('conta');
             } else {
+                $objSession->__set(
+                    'Mensagem', array(
+                    'status' => 'alert alert-block alert-error fade in',
+                    'mensagem' => 'Não foi possível cadastar a conta!'
+                    )
+                );
                 $form->populate($post);
             }
         }
@@ -190,12 +197,18 @@ class Default_ContaController extends Default_SegurancaController
 
         $nomTipo = strip_tags(trim($this->_getParam('nom_tipo_conta')));
         $chvTipoConta = strip_tags(trim($this->_getParam('chv_tp_conta')));
+        $chvTipoContaPai = strip_tags(
+            trim(
+                $this->_getParam('chv_tp_conta_pai')
+            )
+        );
         try {
             $nTipoConta = new NDefault_TipoContaNegocio();
             $chvTpConta = $nTipoConta->gravar(
                 array(
                     'nom_tipo' => $nomTipo,
-                    'chv_tp_conta' => $chvTipoConta
+                    'chv_tp_conta' => $chvTipoConta,
+                    'chv_tp_conta_pai' => $chvTipoContaPai
                 )
             );
             $coTpConta = $nTipoConta->listagem($chvTpConta);
@@ -486,13 +499,15 @@ class Default_ContaController extends Default_SegurancaController
                     $this->view->totalConta = number_format(
                         str_replace(
                             '$', '', $coSoma['ValorConta']
-                        ), 2, '.',' '
+                        ), 2, '.', ' '
                     );
-                    $this->view->totalPago = number_format(
-                        str_replace(
-                            '$', '', $coSoma['ValorPagam']
-                        ), 2, '.',' '
-                    );
+                    if ( is_double($coSoma['ValorPagam']) ) {
+                        $this->view->totalPago = number_format(
+                            str_replace(
+                                '$', '', $coSoma['ValorPagam']
+                            ), 2, '.', ' '
+                        );
+                    }
                     $this->view->resultados = $coContas;
                 } else {
                     $this->view->msg =
@@ -505,4 +520,5 @@ class Default_ContaController extends Default_SegurancaController
         }
         $this->view->form = $form;
     }
+
 }

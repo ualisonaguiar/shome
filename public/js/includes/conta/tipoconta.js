@@ -5,7 +5,8 @@ Conta.incluirTipoConta = function(nom_tipo_conta) {
     type: 'post',
     data: {
       nom_tipo_conta : nom_tipo_conta,
-      chv_tp_conta : $('#chv_tp_conta').val()
+      chv_tp_conta : $('#chv_tp_conta').val(),
+      chv_tp_conta_pai : $('#conta_pai').val()
     },
     url:baseUrl+'/conta/tipoconta/',
     dataType: 'json',
@@ -55,6 +56,7 @@ Conta.editarTipo = function(chv_tp_conta) {
       $('#modal_add_tp_conta').modal('show');
       $('#nom_tipo').val(response.data.nom_tipo);
       $('#chv_tp_conta').val(response.data.chv_tp_conta);
+      $('#conta_pai').val(response.data.chv_tp_conta_pai);
     }
   });
 }
@@ -69,7 +71,8 @@ $(function(){
     Conta.editarTipo($(this).attr('value'));
   }).on('click','.ver-detalhes', function(){
     var detalhes = $(this).parent().children('table');
-
+console.debug($(this).last().children('table'));
+return false;
     if(detalhes.hasClass('hide')) {
       $(this).children('i').removeClass('icon-folder-close');
       $(this).children('i').addClass('icon-folder-open');

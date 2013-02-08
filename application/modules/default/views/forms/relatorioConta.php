@@ -20,9 +20,13 @@ class Form_relatorioConta extends Zend_Form
         $aTpConta = array('' => 'Selecione');
         $coTpContas = $nTpConta->listagem();
 
-        if ( count($coTpContas) != 0 ) {
-            foreach ( $coTpContas as $tpConta ) {
-                $aTpConta[$tpConta['chv_tp_conta']] = $tpConta['nom_tipo'];
+        foreach ( $coTpContas as $contaPai ) {
+            if ( empty($contaPai['chv_tp_conta_pai']) ) {
+                foreach ( $coTpContas as $contaFilho ) {
+                    if ( $contaFilho['chv_tp_conta_pai'] == $contaPai['chv_tp_conta'] ) {
+                        $aTpConta[$contaPai['nom_tipo']][$contaFilho['chv_tp_conta']] = $contaFilho['nom_tipo'];
+                    }
+                }
             }
         }
 

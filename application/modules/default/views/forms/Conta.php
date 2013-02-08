@@ -24,9 +24,13 @@ class Form_Conta extends Zend_Form
         $aTpConta = array('' => 'Selecione');
         $coTpContas = $nTpConta->listagem();
 
-        if ( count($coTpContas) != 0 ) {
-            foreach ( $coTpContas as $tpConta ) {
-                $aTpConta[$tpConta['chv_tp_conta']] = $tpConta['nom_tipo'];
+        foreach ( $coTpContas as $contaPai ) {
+            if ( empty($contaPai['chv_tp_conta_pai']) ) {
+                foreach ( $coTpContas as $contaFilho ) {
+                    if ( $contaFilho['chv_tp_conta_pai'] == $contaPai['chv_tp_conta'] ) {
+                        $aTpConta[$contaPai['nom_tipo']][$contaFilho['chv_tp_conta']] = $contaFilho['nom_tipo'];
+                    }
+                }
             }
         }
 
@@ -197,11 +201,12 @@ class Form_Conta extends Zend_Form
 
     public function isValid($data)
     {
-        if ( array_key_exists('gerar_conta', $data) ) {
-            if ( $data['gerar_conta'] == 1 && (!empty($data['tipo_vencimento']) || !empty($data['nr_parcela'])) ) {
+        if ( $data['gerar_conta'] == 1 ) {
+            if(empty($data['tipo_vencimento']) || empty($data['nr_parcela'])) {
                 return false;
             }
         }
+
         if ( !empty($data['chv_conta']) ) {
             $data['tipo_vencimento'] = "1";
             $data['gerar_conta'] = "2";

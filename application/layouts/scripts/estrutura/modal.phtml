@@ -80,6 +80,16 @@
             <div class="modal-body">
                 <p>Informe o novo tipo de conta:</p>
                 <input type="text" class="input-xlarge" required="true" name="nom_tipo" min="1" maxlength="100" id="nom_tipo">
+
+                <p>Tipo de Conta Pai:</p>
+                <select id="conta_pai" name="chv_tp_conta_pai">
+                    <option value="">Selecione</option>
+                    <?php if ( count($this->tpConta) != 0 ) : ?>
+                        <?php foreach ( $this->tpConta as $tpConta ) : ?>
+                            <option value="<?php echo $tpConta['chv_tp_conta']; ?>"><?php echo $tpConta['nom_tipo']; ?></option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </select>
             </div>
         </div>
         <div class="modal-footer">

@@ -14,7 +14,6 @@
  * @since 1.0
  * @date 26/02/2012
  */
-
 class NDefault_TipoContaNegocio extends PDefault_Models_TipoConta
 {
 
@@ -32,25 +31,27 @@ class NDefault_TipoContaNegocio extends PDefault_Models_TipoConta
                 'Não foi informado o nome do tipo de conta'
             );
         }
+
         $objDb = $this->getDefaultAdapter();
         try {
             $objDb->beginTransaction();
-
             if ( !empty($post['chv_tp_conta']) ) {
                 $chvTipoConta = $post['chv_tp_conta'];
                 $this->update(
                     array(
-                    'nom_tipo' => $post['nom_tipo']
-                    ),
-                    array(
-                        'chv_tp_conta = ?' => $post['chv_tp_conta']
+                    'nom_tipo' => $post['nom_tipo'],
+                    'chv_tp_conta_pai' => !empty($post['chv_tp_conta_pai']) ? $post['chv_tp_conta_pai'] : null
+                    ), array(
+                    'chv_tp_conta = ?' => $post['chv_tp_conta']
                     )
                 );
             } else {
                 unset($post['chv_tp_conta']);
+                $post['chv_tp_conta_pai'] = !empty($post['chv_tp_conta_pai']) ? $post['chv_tp_conta_pai'] : null;
                 $row = $this->createRow($post);
                 $chvTipoConta = $row->save();
             }
+
             $objDb->commit();
             return $chvTipoConta;
         } catch ( Zend_Db_Exception $exc ) {
@@ -65,14 +66,20 @@ class NDefault_TipoContaNegocio extends PDefault_Models_TipoConta
      * @param integer $chvTpConta
      * @return ArrayIterator
      */
-    public function listagem($chvTpConta = null)
+    public function listagem($chvTpConta = null, $contaPai = false)
     {
-        $where = array();
+        $sql = $this->select()
+            ->order('nom_tipo');
+
         if ( !empty($chvTpConta) ) {
-            $where['chv_tp_conta = ?'] = $chvTpConta;
+            $sql->where('chv_tp_conta = ?', $chvTpConta);
         }
 
-        return $this->fetchAll($where, 'nom_tipo asc')->toArray();
+        if ( $contaPai ) {
+            $sql->where('chv_tp_conta_pai is null');
+        }
+
+        return $sql->query()->fetchAll();
     }
 
     /**
@@ -89,20 +96,18 @@ class NDefault_TipoContaNegocio extends PDefault_Models_TipoConta
         $sql = $objDb->select()
             ->from(
                 array(
-                    'tp' => $this->_schema . '.tipo_conta'
+                'tp' => $this->_schema . '.tipo_conta'
                 ), array(
-                    'chv_tp_conta', 'nom_tipo'
+                'chv_tp_conta', 'nom_tipo', 'chv_tp_conta_pai'
                 )
             )
             ->joinLeft(
                 array(
-                    'c' => $this->_schema . '.conta'
-                ),
-                'tp.chv_tp_conta = c.chv_tp_conta',
-                array(
-                    'quantidade' => new Zend_Db_Expr(
-                        'count(c.chv_tp_conta)'
-                    )
+                'c' => $this->_schema . '.conta'
+                ), 'tp.chv_tp_conta = c.chv_tp_conta', array(
+                'quantidade' => new Zend_Db_Expr(
+                    'count(c.chv_tp_conta)'
+                )
                 )
             )
             ->group(array('c.chv_tp_conta', 'tp.nom_tipo', 'tp.chv_tp_conta'))

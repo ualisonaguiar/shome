@@ -10,7 +10,8 @@ Conta.incluirTipoConta = function(nom_tipo_conta) {
   $.ajax({
     type: 'post',
     data: {
-      nom_tipo_conta : nom_tipo_conta
+      nom_tipo_conta : nom_tipo_conta,
+      chv_tp_conta_pai : $('#conta_pai').val()
     },
     url:baseUrl+'/conta/tipoconta/',
     dataType: 'json',
@@ -60,7 +61,7 @@ function vinculaTipoConta() {
 }
 
 $(function(){
-  Conta.AdicionarBotaoTipoConta();
+  //Conta.AdicionarBotaoTipoConta();
   $('#gerarParcelas-label').remove();
   $('body').on('click','.add-tp-conta', function() {
     $('#nom_tipo').val('');
