@@ -113,31 +113,31 @@ class Form_Seguranca extends Zend_Form
     public function alteraSenhaUsuario()
     {
         $senhaAtual = new Zend_Form_Element_Password('ds_senha');
-        $senhaAtual->setLabel('Senha atual')
-            ->setRequired(true)
+        $senhaAtual->setRequired(true)
             ->addFilter('StripTags')
             ->addFilter('StringTrim')
             ->setAttrib('required', 'required')
             ->setAttrib('class', 'input-medium')
-            ->setAttrib("maxlength", "32");
+            ->setAttrib("maxlength", "32")
+            ->setAttrib('placeholder', 'Senha atual');
 
         $novaSenha = new Zend_Form_Element_Password('nova_senha');
-        $novaSenha->setLabel('Nova senha')
-            ->setRequired(true)
+        $novaSenha->setRequired(true)
             ->addFilter('StripTags')
             ->addFilter('StringTrim')
             ->setAttrib('required', 'required')
             ->setAttrib('class', 'input-medium')
-            ->setAttrib("maxlength", "32");
+            ->setAttrib("maxlength", "32")
+            ->setAttrib('placeholder', 'Nova');
 
         $confirmSenha = new Zend_Form_Element_Password('conf_senha');
-        $confirmSenha->setLabel('Confirmação de senha')
-            ->setRequired(true)
+        $confirmSenha->setRequired(true)
             ->addFilter('StripTags')
             ->addFilter('StringTrim')
             ->setAttrib('required', 'required')
             ->setAttrib('class', 'input-medium')
-            ->setAttrib("maxlength", "32");
+            ->setAttrib("maxlength", "32")
+            ->setAttrib('placeholder', 'Confirmação');
 
         return $this->addElement($senhaAtual)
                 ->addElement($novaSenha)
