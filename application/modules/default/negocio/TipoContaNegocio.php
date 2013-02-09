@@ -110,7 +110,14 @@ class NDefault_TipoContaNegocio extends PDefault_Models_TipoConta
                 )
                 )
             )
-            ->group(array('c.chv_tp_conta', 'tp.nom_tipo', 'tp.chv_tp_conta'))
+            ->group(
+                array(
+                    'c.chv_tp_conta',
+                    'tp.nom_tipo',
+                    'tp.chv_tp_conta',
+                    'tp.chv_tp_conta_pai'
+                )
+            )
             ->order(array('quantidade desc', 'nom_tipo asc'));
 
         if ( !empty($chvTpConta) ) {
