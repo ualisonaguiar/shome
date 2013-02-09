@@ -346,7 +346,12 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
                 'chv_conta = ?' => $chvConta
                 )
             );
-            $coContas->delete();
+            $this->delete(
+                array(
+                    'chv_conta = ?' => $chvConta,
+                    'chv_usuario = ?' => $chvUsuario
+                )
+            );
             $objDb->commit();
         } catch ( Zend_Db_Exception $exec ) {
             $objDb->rollBack();
