@@ -15,7 +15,7 @@
                 <li class=""><a data-toggle="tab" href="#vencimento">Vencimento</a></li>
                 <li class=""><a data-toggle="tab" href="#pagamento">Pagamento</a></li>
                 <li class=""><a data-toggle="tab" href="#observacao">Observações</a></li>
-                <li class=""><a data-toggle="tab" href="#arquivos">Arquivos</a></li>
+                <li class=""><a data-toggle="tab" href="#arquivos"><i class="icon-file"></i>Arquivos</a></li>
             </ul>
 
             <form method="post" action="" enctype="multipart/form-data">
@@ -53,6 +53,7 @@
                                         <th>Tipo da conta</th>
                                         <th>Tamanho</th>
                                         <th>Data de atualização</th>
+                                        <th>Situação do arquivo</th>
                                         <th>Ação</th>
                                     </tr>
                                 </thead>
@@ -68,12 +69,25 @@
                                             <td><?php echo $anexo['size_file']; ?></td>
                                             <td><?php echo $anexo['dat_inclusao']; ?></td>
                                             <td>
+						<?php if(file_exists($anexo['caminho_file'])) : ?>
+                                                    <?php if(md5_file($anexo['caminho_file']) == $anexo['md5']) : ?>
+							<img src="<?php echo $this->baseUrl('/public/img/flag-verde.png'); ?>" title="Arquivo integro">
+						    <?php else: ?>
+							<img src="<?php echo $this->baseUrl('/public/img/flag-vermelho.png'); ?>" title="Arquivo não íntegro">							
+						    <?php endif; ?>							
+						<?php else :?>
+							<i class="icon-ban-circle" title="Arquivo não localizado"></i>
+						<?php endif; ?>
+					    </td>
+                                            <td>
                                                 <a href="#" value="<?php echo $anexo['chv_file']; ?>" class="btExcluir" title="Editar"></a>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
+			    <?php else:?>
+				<strong>Não existe arquivos nesta conta</strong>
                         <?php endif; ?>
                     </div>
                 </div>

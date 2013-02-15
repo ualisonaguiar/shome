@@ -205,7 +205,7 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
                 ->from(
                     array(
                     'c' => $this->_schema . '.' . $this->_name
-                    ), array('c.nom_conta', 'c.chv_conta')
+                    ), array('c.nom_conta', 'c.chv_conta','c.chv_usuario')
                 )
                 ->joinInner(
                     array(
@@ -264,7 +264,7 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
                 'a' => 'file'
                 ), 'a.chv_file = cf.chv_arquivo', array(
                 'a.nm_file', 'a.caminho_file',
-                'a.extensao_file', 'a.size_file',
+                'a.extensao_file', 'a.md5','a.size_file',
                 'dat_inclusao' =>
                 "to_char(dat_inclusao, 'DD/MM/YYYY HH24:MI:SS')",
                 'chv_file'

@@ -122,6 +122,20 @@ class Default_ContaController extends Default_SegurancaController
 
             $coConta = $nConta->detalhesConta($chvConta);
 
+			if ( $coConta[0]['chv_usuario'] != $this->_objDadosUsuario->chv_usuario ) {
+				$objSession = new Zend_Session_Namespace('Data');
+                    $objSession->__set(
+                        'Mensagem', array(
+                        'status' =>
+                        'alert alert-block alert-error fade in',
+                        'mensagem' => 'Você não tem acesso a esta conta!'
+                        )
+                    );
+				$this->_redirect('conta');
+			}
+
+			Zend_Debug::dump($coConta);die;
+
             $form = new Form_Conta();
             $form->addDisplayGroup(
                 array(
