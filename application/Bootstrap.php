@@ -80,15 +80,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         define('PATH_FILE', getcwd() . '/files');
     }
 
-    /**
-     * Método inicializar para configuração de servidor d email.
-     *
-     * @return void
-     */
-    protected function _initMail()
-    {
-
-    }
 
     /**
      * Método que registra os Helpers do Sistema.
@@ -102,4 +93,3 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     }
 
 }
-
