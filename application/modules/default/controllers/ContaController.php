@@ -134,8 +134,6 @@ class Default_ContaController extends Default_SegurancaController
 				$this->_redirect('conta');
 			}
 
-			Zend_Debug::dump($coConta);die;
-
             $form = new Form_Conta();
             $form->addDisplayGroup(
                 array(
