@@ -1,116 +1,77 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-    <head>
-        <title> .:SHOME:. </title>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <link href="<?php echo $this->baseUrl('/public/css/bootstrap.min.css'); ?>" rel="stylesheet" type="text/css" />
-        <link href="<?php echo $this->baseUrl('/public/css/bootstrap-responsive.min.css'); ?>" rel="stylesheet" type="text/css" /
-              <link href="<?php echo $this->baseUrl('/public/css/font-google'); ?>?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet" type="text/css" />
-        <link href="<?php echo $this->baseUrl('/public/css/base-admin.css'); ?>" rel="stylesheet" type="text/css" />
-        <link href="<?php echo $this->baseUrl('/public/css/themes.css'); ?>" rel="stylesheet" type="text/css" />
-        <link href="<?php echo $this->baseUrl('/public/css/themes/base/jquery.ui.all.css'); ?>" rel="stylesheet" type="text/css" />
-
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/jquery-1.8.3.js"); ?>"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/ui/jquery.ui.core.js"); ?>"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/ui/jquery.ui.widget.js"); ?>"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/ui/jquery.ui.datepicker.js"); ?>"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/ui/i18n/jquery.ui.datepicker-pt-BR.js"); ?>"></script>
-
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/external/jquery.bgiframe-2.1.2.js"); ?>"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/ui/jquery.ui.mouse.js"); ?>"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/ui/jquery.ui.draggable.js"); ?>"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/ui/jquery.ui.position.js"); ?>"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/ui/jquery.ui.resizable.js"); ?>"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/ui/jquery.ui.dialog.js"); ?>"></script>
-
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/bootstrap.js"); ?>"></script>
-
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/ckeditor/ckeditor.js"); ?>"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/jquery.maskedinput.js"); ?>"></script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/jquery.price_format.1.7.js"); ?>"></script>
-
-        <script type="text/javascript">
-            var baseUrl = '<?php echo $this->baseUrl(); ?>';
-        </script>
-        <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/script.js"); ?>"></script>
-    </head>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                <a class="brand" href="<?php echo $this->baseUrl('index'); ?>">Sistema de casa</a>
-                <?php if ( !empty($this->objDadosUsuario->chv_usuario) ): ?>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="<?php echo $this->baseUrl('index'); ?>">Sistema de casa</a>
+            <?php if ( !empty($this->objDadosUsuario->chv_usuario) ): ?>
+                <div class="nav-collapse collapse">
+                    <p class="navbar-text pull-right">
+                        <i class="icon-white icon-user"></i>
+                        <a href="<?php echo $this->baseUrl('usuario/alterar/id/' . $this->objDadosUsuario->chv_usuario); ?>" class="navbar-link" style="color: #FFF">
+                            <?php echo $this->objDadosUsuario->nom_usuario; ?>
+                        </a>
+                        &nbsp;&nbsp;&nbsp;
+                        <a href="<?php echo $this->baseUrl('seguranca/logout'); ?>" title="sair do sistema">
+                            <i class="icon-white icon-off"></i>
+                        </a>
+                    </p>
                     <div class="nav-collapse collapse">
-                        <p class="navbar-text pull-right">
-                            <i class="icon-white icon-user"></i>
-                            <a href="<?php echo $this->baseUrl('usuario/alterar/id/' . $this->objDadosUsuario->chv_usuario); ?>" class="navbar-link" style="color: #FFF">
-                                    <?php echo $this->objDadosUsuario->nom_usuario; ?>
-                            </a>
-                            &nbsp;&nbsp;&nbsp;
-                            <a href="<?php echo $this->baseUrl('seguranca/logout'); ?>" title="sair do sistema">
-                                <i class="icon-white icon-off"></i>
-                            </a>
-                        </p>
-                        <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li class="dropdown">
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">Configuração<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="<?php echo $this->baseUrl('gerenciamento/email'); ?>">E-mail</a></li>
+                                    <li><a href="<?php echo $this->baseUrl('usuario'); ?>">Usuário</a></li>
+                                    <li><a href="<?php echo $this->baseUrl('gerenciamento/indexerro'); ?>">Gerenciamento de erros</a></li>
+                                    <li><a href="<?php echo $this->baseUrl('gerenciamento/index'); ?>">Gerencimento de armazenamento</a></li>
+                                </ul>
+                            </li>
                             <ul class="nav">
                                 <li class="dropdown">
-                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">Configuração<b class="caret"></b></a>
+                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">Entidade<b class="caret"></b></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="<?php echo $this->baseUrl('gerenciamento/email'); ?>">E-mail</a></li>
-                                        <li><a href="<?php echo $this->baseUrl('usuario'); ?>">Usuário</a></li>
-                                        <li><a href="<?php echo $this->baseUrl('gerenciamento/indexerro'); ?>">Gerenciamento de erros</a></li>
-                                        <li><a href="<?php echo $this->baseUrl('gerenciamento/index'); ?>">Gerencimento de armazenamento</a></li>
+                                        <li><a href="<?php echo $this->baseUrl('entidade'); ?>">Listagem</a></li>
+                                        <li><a href="<?php echo $this->baseUrl('entidade/novo'); ?>">Nova</a></li>
+                                        <li><a href="<?php echo $this->baseUrl('entidade/tipoentidade'); ?>">Tipo de entidade</a></li>
                                     </ul>
                                 </li>
-                                <ul class="nav">
-                                    <li class="dropdown">
-                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Entidade<b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="<?php echo $this->baseUrl('entidade'); ?>">Listagem</a></li>
-                                            <li><a href="<?php echo $this->baseUrl('entidade/novo'); ?>">Nova</a></li>
-                                            <li><a href="<?php echo $this->baseUrl('entidade/tipoentidade'); ?>">Tipo de entidade</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <ul class="nav">
-                                    <li class="dropdown">
-                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Contas<b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="<?php echo $this->baseUrl('conta'); ?>">Listagem</a></li>
-                                            <li><a href="<?php echo $this->baseUrl('orcamento'); ?>">Orçamento</a></li>
-                                            <li><a href="<?php echo $this->baseUrl('conta/novo'); ?>">Nova</a></li>
-                                            <li><a href="<?php echo $this->baseUrl('conta/relatorio'); ?>">Relatório</a></li>
-                                            <li><a href="<?php echo $this->baseUrl('conta/listagemtipoconta'); ?>">Tipo de conta</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Projetos<b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Listagem</a></li>
-                                            <li><a href="#">Novo</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Meus dados<b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="<?php echo $this->baseUrl('usuario/alterar/id/' . $this->objDadosUsuario->chv_usuario); ?>">Alterar dados</a></li>
-                                            <li><a href="#" id="alterar_senha_usuario">Senha</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                        </div>
-                    </div><!--/.nav-collapse -->
-                <?php endif; ?>
-            </div>
+                            </ul>
+                            <ul class="nav">
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">Contas<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="<?php echo $this->baseUrl('conta'); ?>">Listagem</a></li>
+                                        <li><a href="<?php echo $this->baseUrl('orcamento'); ?>">Orçamento</a></li>
+                                        <li><a href="<?php echo $this->baseUrl('conta/novo'); ?>">Nova</a></li>
+                                        <li><a href="<?php echo $this->baseUrl('conta/relatorio'); ?>">Relatório</a></li>
+                                        <li><a href="<?php echo $this->baseUrl('conta/listagemtipoconta'); ?>">Tipo de conta</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">Projetos<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Listagem</a></li>
+                                        <li><a href="#">Novo</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">Meus dados<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="<?php echo $this->baseUrl('usuario/alterar/id/' . $this->objDadosUsuario->chv_usuario); ?>">Alterar dados</a></li>
+                                        <li><a href="#" id="alterar_senha_usuario">Senha</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                    </div>
+                </div><!--/.nav-collapse -->
+            <?php endif; ?>
         </div>
     </div>
-</html>
+</div>
 
 <div class="alert-mensagem">
     <?php if ( $this->retorno['mensagem'] != '' ) : ?>

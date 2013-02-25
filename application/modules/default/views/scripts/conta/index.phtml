@@ -87,7 +87,7 @@
                                     <?php echo (empty($tipoContas['nr_parcela']) || $tipoContas['nr_parcela'] == 0) ? '-' : $tipoContas['nr_parcela']; ?>
                                 </td>
                                 <td>
-                                    <a href="<?php echo $this->baseUrl('conta/editar/id/' . $tipoContas['chv_conta']); ?>" class="btEditar" title="Editar"></a>
+                                    <a href="<?php echo $this->baseUrl('conta/editar/id/' . $tipoContas['chv_conta']); ?>" title="Editar"><i class="icon-pencil"></i></a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
