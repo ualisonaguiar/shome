@@ -15,7 +15,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
         get_include_path(),
     )));
 
-define('PATH_TMP', (APPLICATION_ENV == 'production') ? '/home/ualisonaguiar/www/contas/public/tmp/' : null);
+define('PATH_TMP', (APPLICATION_ENV == 'production') ? '/home/ualisonaguiar/www/shome/public/tmp/' : null);
 
 /** Zend_Application */
 require_once 'Zend/Application.php';
