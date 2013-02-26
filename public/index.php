@@ -1,5 +1,4 @@
 <?php
-
 date_default_timezone_set('America/Sao_Paulo');
 
 // Define path to application directory
@@ -15,6 +14,8 @@ set_include_path(implode(PATH_SEPARATOR, array(
         realpath(APPLICATION_PATH . '/../library'),
         get_include_path(),
     )));
+
+define('PATH_TMP', (APPLICATION_ENV == 'production') ? '/home/ualisonaguiar/www/contas/public/tmp/' : null);
 
 /** Zend_Application */
 require_once 'Zend/Application.php';
