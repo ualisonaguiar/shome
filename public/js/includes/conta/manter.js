@@ -29,24 +29,9 @@ Conta.incluirTipoConta = function(nom_tipo_conta) {
   });
 }
 
-Conta.excluirArquivo = function(chv_file) {
-  $.ajax({
-    type: 'post',
-    data: {
-      chv_file : chv_file,
-      chv_conta: $('#chv_conta').val()
-    },
-    url:baseUrl+'/conta/excluirfile/',
-    dataType: 'json',
-    success: function(response){
-      if(response.status != true) {
-        Mensagem.erro(response.mensagem);
-        return false;
-      }
-      Mensagem.sucesso(response.mensagem);
-      $("a.btExcluir[value='"+chv_file+"']").parent().parent().remove();
-    }
-  });
+Conta.excluirArquivo = function(chv_file, chv_conta) {
+  var url = baseUrl+'/conta/excluirfile/chv_file/'+chv_file+'/chv_conta/'+chv_conta;
+  Mensagem.confirmacao('Você deseja realmente excluir este arquivo?', url);
 }
 
 function vinculaTipoConta() {
@@ -71,7 +56,7 @@ $(function(){
   }).on('change', '#chv_entidade', function(){
     vinculaTipoConta();
   }).on('click','.btExcluir', function() {
-    Conta.excluirArquivo($(this).attr('value'));
+    Conta.excluirArquivo($(this).attr('value'), $('#chv_conta').val());
   }).on('change', '#gerar_conta', function() {
     if($(this).val() == '' || $(this).val() == '2') {
       $('#tipo_vencimento').val(0);

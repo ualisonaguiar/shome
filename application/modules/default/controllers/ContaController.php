@@ -120,17 +120,17 @@ class Default_ContaController extends Default_SegurancaController
             $chvConta = $this->getParam('id');
             $nConta = new NDefault_ContaNegocio();
             $coConta = $nConta->detalhesConta($chvConta);
-			if ( $coConta[0]['chv_usuario'] != $this->_objDadosUsuario->chv_usuario ) {
-				$objSession = new Zend_Session_Namespace('Data');
-                    $objSession->__set(
-                        'Mensagem', array(
-                        'status' =>
-                        'alert alert-block alert-error fade in',
-                        'mensagem' => 'Você não tem acesso a esta conta!'
-                        )
-                    );
-				$this->_redirect('conta');
-			}
+            if ( $coConta[0]['chv_usuario'] != $this->_objDadosUsuario->chv_usuario ) {
+                $objSession = new Zend_Session_Namespace('Data');
+                $objSession->__set(
+                    'Mensagem', array(
+                    'status' =>
+                    'alert alert-block alert-error fade in',
+                    'mensagem' => 'Você não tem acesso a esta conta!'
+                    )
+                );
+                $this->_redirect('conta');
+            }
 
             $form = new Form_Conta();
             $form->addDisplayGroup(
@@ -263,24 +263,29 @@ class Default_ContaController extends Default_SegurancaController
         $chvConta = $this->_getParam('chv_conta');
 
         $nConta = new NDefault_ContaNegocio();
+        $objSession = new Zend_Session_Namespace('Data');
+
         try {
             $nConta->excluirArquivo($chvFile, $chvConta);
-            echo json_encode(
-                array(
-                    'status' => true,
-                    'mensagem' => 'Arquivo excluído com sucesso'
+            $objSession->__set(
+                'Mensagem', array(
+                'status' =>
+                'alert alert-block alert-success fade in',
+                'mensagem' => 'Arquivo excluído com sucesso'
                 )
             );
         } catch ( Exception $exc ) {
             $nErro = new NDefault_ErroNegocio();
             $chvErro = $nErro->registraErro($exc);
-            echo json_encode(
-                array(
-                    'status' => false,
-                    'mensagem' => $exc->getMessage()
+            $objSession->__set(
+                'Mensagem', array(
+                'status' =>
+                'alert alert-block alert-error fade in',
+                'mensagem' => $exc->getMessage()
                 )
             );
         }
+        $this->_redirect('conta/editar/id/' . $chvConta);
     }
 
     /**
