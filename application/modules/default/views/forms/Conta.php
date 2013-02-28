@@ -21,7 +21,7 @@ class Form_Conta extends Zend_Form
     {
         $chvTipoConta = new Zend_Form_Element_Select('chv_tp_conta');
         $nTpConta = new NDefault_TipoContaNegocio();
-        $aTpConta = array('' => 'Selecione');
+        $aTpConta = array();
         $coTpContas = $nTpConta->listagem();
 
         foreach ( $coTpContas as $contaPai ) {
@@ -35,8 +35,9 @@ class Form_Conta extends Zend_Form
         }
 
         $chvTipoConta->setLabel('Tipo de conta')
+            ->addMultiOption('', 'Selecione')
             ->addMultiOptions($aTpConta)
-            ->setAttrib('required', 'required')
+            ->setErrorMessages(array('Informe o tipo da conta'))
             ->setRegisterInArrayValidator(true)
             ->addValidator('NotEmpty', false)
             ->setRequired(true);
@@ -45,57 +46,53 @@ class Form_Conta extends Zend_Form
         $nEntidade = new NDefault_EntidadeNegocio();
         $coEntidades = $nEntidade->listagem(true);
 
-        $coEntidade = array('' => 'Selecione');
+        $coEntidade = array();
         if ( count($coEntidades) != 0 ) {
             foreach ( $coEntidades as $entidade ) {
                 $coEntidade[$entidade['chv_pessoa_juridica']] = $entidade['nom_fantasia'];
             }
         }
         $chvEntidade->setLabel('Entidade jurídica')
+            ->addMultiOption('', 'Selecione')
             ->addMultiOptions($coEntidade)
-            ->addFilter('StripTags')
-            ->addFilter('StringTrim')
-            ->setAttrib('required', 'required')
             ->setRegisterInArrayValidator(true)
             ->addValidator('NotEmpty', false)
+            ->setErrorMessages(array('Informe a entidade responsável por esta conta'))
             ->setRequired(true);
 
         $nomConta = new Zend_Form_Element_Text('nom_conta');
         $nomConta->setLabel('Nome da conta')
             ->setRequired(true)
             ->addFilter('StripTags')
-            ->setAttrib('required', 'required')
             ->addFilter('StringTrim')
             ->setAttrib('class', 'input-xlarge')
             ->setAttrib("maxlength", "400")
-            ->setErrorMessages(array('Valor informado errado'))
-            ->setValue('');
+            ->addValidator('StringLength', false, array(3, 400, 'UTF-8'))
+            ->setErrorMessages(array('Informe o nome da conta'));
 
         $dtVencimento = new Zend_Form_Element_Text('dat_vencimento');
         $dtVencimento->setLabel('Data de vencimento')
             ->setRequired(true)
-            ->addFilter('StripTags')
-            ->setAttrib('required', 'true')
-            ->addFilter('StringTrim')
             ->setAttrib('class', 'input-small data')
+            ->addValidator(new Zend_Validate_Date('dd/MM/yyyy'))
+            ->setErrorMessages(array('A data informada é inválida'))
             ->setAttrib("maxlength", "10");
 
         $geradorConta = new Zend_Form_Element_Select('gerar_conta');
         $geradorConta->setLabel('Gerar novas contas a partir desta?')
-            ->addMultiOptions(array('' => 'Selecione', '1' => 'Sim', '2' => 'Não'))
-            ->addFilter('StripTags')
-            ->addFilter('StringTrim')
-            ->setAttrib('required', 'required')
+            ->addMultiOption('', 'Selecione')
+            ->addMultiOptions(array(1 => 'Sim', 2 => 'Não'))
             ->setRegisterInArrayValidator(true)
             ->addValidator('NotEmpty', false)
+            ->setValue(2)
             ->setRequired(true);
 
         $tipoVencimento = new Zend_Form_Element_Select('tipo_vencimento');
         $tipoVencimento->setLabel('Tipo de vencimento?')
             ->setAttrib('disabled', 'true')
+            ->addMultiOption('', 'Selecione')
             ->addMultiOptions(
                 array(
-                    '' => 'Selecione',
                     '1' => 'Semanal',
                     '2' => 'Mensal',
                     '3' => 'Bimestral',
@@ -104,14 +101,17 @@ class Form_Conta extends Zend_Form
                     '6' => 'Anual'
                 )
             )
+            ->setErrorMessages(array('Tipo de vencimento inválido'))
+            ->setRegisterInArrayValidator(true)
             ->setRequired(false);
 
         $numeroParcelas = new Zend_Form_Element_Text('nr_parcela');
-        $numeroParcelas->setLabel('Quantidade de parcelas')
+        $numeroParcelas->setLabel('Número de parcelas')
             ->setRequired(false)
-            ->addFilter('StripTags')
-            ->addFilter('StringTrim')
             ->setAttrib('class', 'input-small numero')
+            ->addValidator('StringLength', false, array(1, 20, 'UTF-8'))
+            ->addValidator(new Zend_Validate_Int())
+            ->setErrorMessages(array('Número de parcelas inválida'))
             ->setAttrib("maxlength", "20");
 
 
@@ -119,9 +119,9 @@ class Form_Conta extends Zend_Form
         $vlrConta->setLabel('Valor da fatura')
             ->setRequired(true)
             ->addFilter('StripTags')
-            ->setAttrib('required', 'true')
             ->addFilter('StringTrim')
             ->setAttrib('class', 'input-xlarge moeda')
+            ->setErrorMessages(array('Valor da conta inválida'))
             ->setAttrib("maxlength", "255");
 
         $fileConta = new Zend_Form_Element_File('fatura');
@@ -129,14 +129,15 @@ class Form_Conta extends Zend_Form
             ->setRequired(false)
             ->addValidator('Size', false, 10485760)
             ->addValidator('NotEmpty')
+            ->setErrorMessages(array('Tipo de conta inválida'))
             ->addValidator('Count', false, 1);
 
         $dtPagamento = new Zend_Form_Element_Text('dat_pagamento');
         $dtPagamento->setLabel('Data de pagamento')
             ->setRequired(false)
-            ->addFilter('StripTags')
-            ->addFilter('StringTrim')
+            ->addValidator(new Zend_Validate_Date('dd/MM/yyyy'))
             ->setAttrib('class', 'input-small data')
+            ->setErrorMessages(array('Data de pagamento inválida'))
             ->setAttrib("maxlength", "10");
 
         $vlrPaga = new Zend_Form_Element_Text('vlr_pagamento');
@@ -145,12 +146,14 @@ class Form_Conta extends Zend_Form
             ->addFilter('StripTags')
             ->addFilter('StringTrim')
             ->setAttrib('class', 'input-xlarge moeda')
+            ->setErrorMessages(array('Valor pago inválido'))
             ->setAttrib("maxlength", "255");
 
         $filePaga = new Zend_Form_Element_File('recibo');
         $filePaga->setLabel('Recibo da conta')
             ->setRequired(false)
             ->addFilter('StripTags')
+            ->setErrorMessages(array('Recibo inválido'))
             ->addValidator('Size', false, array('min' => 0, 'max' => 10485760));
 
         $observacao = new Zend_Form_Element_Textarea('observacao');
@@ -201,9 +204,11 @@ class Form_Conta extends Zend_Form
 
     public function isValid($data)
     {
-        if ( $data['gerar_conta'] == 1 ) {
-            if(empty($data['tipo_vencimento']) || empty($data['nr_parcela'])) {
-                return false;
+        if ( array_key_exists('gerar_conta', $data) ) {
+            if ( $data['gerar_conta'] == 1 ) {
+                if ( empty($data['tipo_vencimento']) || empty($data['nr_parcela']) ) {
+                    return false;
+                }
             }
         }
 
@@ -212,13 +217,6 @@ class Form_Conta extends Zend_Form
             $data['gerar_conta'] = "2";
         }
         return parent::isValid($data);
-    }
-
-    public function populate(array $values)
-    {
-        $this->getElement('nr_parcela')
-            ->setLabel('Número da parcela');
-        return parent::populate($values);
     }
 
 }

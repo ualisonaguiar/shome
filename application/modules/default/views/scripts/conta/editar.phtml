@@ -22,7 +22,7 @@
                 <div class="pull pull-right">
                     <br><br>
                     <button type="submit" class="btn btn-success"><i class="icon-ok-sign icon-white"></i>&nbsp;Salvar</button>
-                    <a class="btn" href="<?php echo $this->baseUrl('conta'); ?>"><i class="icon-home"></i>&nbsp;Voltar</a>
+                    <a class="btn" href="<?php echo $this->baseUrl('conta'); ?>"><i class="icon-th-list"></i>&nbsp;Voltar</a>
                     <br><br>
                 </div>
                 <input type="hidden" id="chv_conta" name="chv_conta" value="<?php echo $this->chvConta; ?>">
@@ -73,8 +73,8 @@
                                                     <?php if(md5_file($anexo['caminho_file']) == $anexo['md5']) : ?>
 							<img src="<?php echo $this->baseUrl('/public/img/flag-verde.png'); ?>" title="Arquivo integro">
 						    <?php else: ?>
-							<img src="<?php echo $this->baseUrl('/public/img/flag-vermelho.png'); ?>" title="Arquivo não íntegro">							
-						    <?php endif; ?>							
+							<img src="<?php echo $this->baseUrl('/public/img/flag-vermelho.png'); ?>" title="Arquivo não íntegro">
+						    <?php endif; ?>
 						<?php else :?>
 							<i class="icon-ban-circle" title="Arquivo não localizado"></i>
 						<?php endif; ?>

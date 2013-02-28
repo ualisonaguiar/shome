@@ -32,8 +32,13 @@ class Default_ContaController extends Default_SegurancaController
                 if ( $contas['usuario'] !=
                     $this->_objDadosUsuario->chv_usuario ) {
                     unset($coContas[$k]);
-                    break;
                 }
+            }
+            
+            foreach ( $coContas as $k => $conta ) {
+                $coContas[$k]['nr_parcela'] = $this->quantidadeParcelas(
+                    $conta['nr_parcela'], $conta['nomeConta']
+                );
             }
         }
         $this->view->coContas = $coContas;
@@ -149,6 +154,16 @@ class Default_ContaController extends Default_SegurancaController
                 ), 'vencimento'
             );
 
+            if ( $coConta[0]['nr_parcela'] == 0 ) {
+                $form->removeElement('nr_parcela');
+            } else {
+                $form->getElement('nom_conta')
+                    ->setAttrib('readonly', true);
+
+                $form->getElement('nr_parcela')
+                    ->setAttrib('readonly', true);
+            }
+
             $this->view->form = $form->populate($coConta[0]);
             $this->view->chvConta = $chvConta;
             if ( $this->getRequest()->isPost() ) {
@@ -168,10 +183,10 @@ class Default_ContaController extends Default_SegurancaController
                             'mensagem' => 'Conta alterada com sucesso!'
                             )
                         );
-                    } else {
-                        $post['chv_conta'] = $this->_getParam('chv_conta');
-                        $this->view->form = $form->populate($post);
+                        $this->_redirect('conta/editar/id/' . $chvConta);
                     }
+                    $post['chv_conta'] = $this->_getParam('chv_conta');
+                    $this->view->form = $form->populate($post);
                 } catch ( Zend_Exception $exc ) {
                     $nErro = new NDefault_ErroNegocio();
                     $chvErro = $nErro->registraErro($exc);
@@ -183,7 +198,6 @@ class Default_ContaController extends Default_SegurancaController
                         )
                     );
                 }
-                $this->_redirect('conta/editar/id/' . $chvConta);
             }
 
             //buscando os arquivos
@@ -524,6 +538,13 @@ class Default_ContaController extends Default_SegurancaController
                             ), 2, '.', ' '
                         );
                     }
+
+                    foreach ( $coContas as $k => $conta ) {
+                        $coContas[$k]['nr_parcela'] = $this->quantidadeParcelas(
+                            $conta['nr_parcela'], $conta['nomeConta']
+                        );
+                    }
+
                     $this->view->resultados = $coContas;
                 } else {
                     $this->view->msg =
@@ -535,6 +556,18 @@ class Default_ContaController extends Default_SegurancaController
             }
         }
         $this->view->form = $form;
+    }
+
+    public function quantidadeParcelas($nrParcela, $nmConta)
+    {
+        $nConta = new NDefault_ContaNegocio();
+        $coContas = $nConta->listagemConta(
+            array(
+                'nom_conta' => $nmConta
+            )
+        );
+        $qtd = count($coContas);
+        return (($nrParcela == 0) ? '1' : $nrParcela) . '/' . $qtd;
     }
 
 }

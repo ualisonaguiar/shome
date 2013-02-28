@@ -55,10 +55,8 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
 
             if ( !empty($dados['vlr_conta']) ) {
                 $dados['vlr_conta'] = str_replace(
-                    'R$ ', '',
-                    str_replace(
-                        ',', '.',
-                        str_replace('.', '', $dados['vlr_conta']
+                    'R$ ', '', str_replace(
+                        ',', '.', str_replace('.', '', $dados['vlr_conta']
                         )
                     )
                 );
@@ -66,10 +64,8 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
 
             if ( !empty($dados['vlr_pagamento']) ) {
                 $dados['vlr_pagamento'] = str_replace(
-                    'R$ ', '',
-                    str_replace(
-                        ',', '.',
-                        str_replace('.', '', $dados['vlr_pagamento']
+                    'R$ ', '', str_replace(
+                        ',', '.', str_replace('.', '', $dados['vlr_pagamento']
                         )
                     )
                 );
@@ -81,8 +77,7 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
                     $dados['dat_pagamento']
                 ) ? $dados['dat_pagamento'] : NULL,
                 'vlr_conta' => $dados['vlr_conta'],
-                'vlr_pagamento' => !empty($dados['vlr_pagamento'])
-                        ? $dados['vlr_pagamento'] : NULL,
+                'vlr_pagamento' => !empty($dados['vlr_pagamento']) ? $dados['vlr_pagamento'] : NULL,
                 'observacao' => str_replace("\\", '', $dados['observacao']),
                 'nr_parcela' => $dados['nr_parcela']
             );
@@ -205,7 +200,7 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
                 ->from(
                     array(
                     'c' => $this->_schema . '.' . $this->_name
-                    ), array('c.nom_conta', 'c.chv_conta','c.chv_usuario')
+                    ), array('c.nom_conta', 'c.chv_conta', 'c.chv_usuario')
                 )
                 ->joinInner(
                     array(
@@ -264,7 +259,7 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
                 'a' => 'file'
                 ), 'a.chv_file = cf.chv_arquivo', array(
                 'a.nm_file', 'a.caminho_file',
-                'a.extensao_file', 'a.md5','a.size_file',
+                'a.extensao_file', 'a.md5', 'a.size_file',
                 'dat_inclusao' =>
                 "to_char(dat_inclusao, 'DD/MM/YYYY HH24:MI:SS')",
                 'chv_file'
@@ -426,6 +421,11 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
             $data = new Zend_Date($aFiltro['data_pag_final']);
             $sql->where('cd.dat_pagamento <= ?', $data->get('YYYY-MM-dd'));
         }
+
+        if ( !empty($aFiltro['nom_conta']) ) {
+            $sql->where('c.nom_conta = ?', $aFiltro['nom_conta']);
+        }
+
         return $sql->query()->fetchAll();
     }
 
@@ -474,4 +474,5 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
         }
         return $sql->query()->fetchAll();
     }
+
 }

@@ -37,3 +37,10 @@
 .btRefresh {
   background-position:-21px -1px;
 }
+
+.errors {
+  color: red;
+  text-align: left;
+  font-weight: bolder;
+  font-style: italic;
+}
