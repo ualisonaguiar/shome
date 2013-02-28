@@ -2,3 +2,5 @@
 /nbproject/
 /docs/
 /application/configs/*
+*.swp
+*.ini
