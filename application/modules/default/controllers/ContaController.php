@@ -119,9 +119,7 @@ class Default_ContaController extends Default_SegurancaController
         try {
             $chvConta = $this->getParam('id');
             $nConta = new NDefault_ContaNegocio();
-
             $coConta = $nConta->detalhesConta($chvConta);
-
 			if ( $coConta[0]['chv_usuario'] != $this->_objDadosUsuario->chv_usuario ) {
 				$objSession = new Zend_Session_Namespace('Data');
                     $objSession->__set(

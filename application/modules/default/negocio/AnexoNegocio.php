@@ -61,7 +61,7 @@ class NDefault_AnexoNegocio extends PDefault_Models_Anexo
         if ( !empty($chvFile) ) {
             $where['chv_file = ?'] = $chvFile;
         }
-        return $this->fetchAll($where,'dat_inclusao desc')->toArray();
+        return $this->fetchAll($where, 'dat_inclusao desc')->toArray();
     }
 
     /**
@@ -74,25 +74,16 @@ class NDefault_AnexoNegocio extends PDefault_Models_Anexo
     public function excluir($chvFile)
     {
         try {
-            $coFile = $this->createRow(
-                $this->find($chvFile)
-                    ->current()
-                    ->toArray()
-            );
-
+            $coFile = $this->find($chvFile)->current();
             if ( count($coFile) == 0 ) {
                 throw new Zend_Exception('Arquivo não localizado');
             }
-
             if ( !file_exists($coFile['caminho_file']) ) {
                 $coFile->delete();
                 throw new Zend_Exception('Arquivo não localizado');
-            } else {
-                unlink($coFile['caminho_file']);
             }
-            if ( file_exists($coFile['caminho_file']) ) {
-                $coFile->delete();
-            }
+            unlink($coFile['caminho_file']);
+            $coFile->delete();
         } catch ( Zend_Db_Exception $exc ) {
             throw new Zend_Exception($exc->getMessage());
         }
@@ -121,8 +112,6 @@ class NDefault_AnexoNegocio extends PDefault_Models_Anexo
                 $ext = '...';
                 break;
         }
-
         return $ext;
     }
-
 }
