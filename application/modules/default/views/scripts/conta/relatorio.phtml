@@ -78,7 +78,11 @@
                                         <tr>
                                             <td>
                                                 <a href="<?php echo $this->baseUrl('conta/editar/id/' . $resultado['chv_conta']); ?>">
+						<?php if(!empty($resultado['dataPagamento'])) : ?>
+                                                    <strike><?php echo $resultado['nomeConta']; ?></strike>
+						<?php else: ?>
                                                     <?php echo $resultado['nomeConta']; ?>
+						<?php endif;?>
                                                 </a>
                                             </td>
                                             <td><?php echo $resultado['pj']; ?></td>
