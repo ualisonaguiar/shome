@@ -178,7 +178,7 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
                 )
             )
             ->where('cd.dat_pagamento is null')
-	    ->order(array('dat_vencimento','c.nom_conta'))
+            ->order(array('dat_vencimento','c.nom_conta'))
             ->query();
         return $sql->fetchAll();
     }
@@ -396,7 +396,7 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
                 'valorPago' => 'vlr_pagamento'
                 )
             )
-            ->order(array('dat_vencimento','c,nom_conta'));
+            ->order(array('dat_vencimento','c.nom_conta'));
         //Filtros
         if ( !empty($aFiltro['chv_tp_conta']) ) {
             $sql->where('c.chv_tp_conta = ?', $aFiltro['chv_tp_conta']);
