@@ -10,7 +10,6 @@ class Default_IndexController extends Default_SegurancaController
      */
     public function indexAction()
     {
-
+        
     }
-
 }
