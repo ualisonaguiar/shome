@@ -11,8 +11,41 @@ Avaliador.pesquisarRelatorio = function() {
         url: baseUrl + '/relatorio/pesquisar-resultado-grafico/',
         dataType: 'json',
         success: function(response) {
+            var arrValor = new Array();
+            var arrTicks = new Array();
 
+            $.each(response.data, function(i) {
+                arrValor[i] = this.totalConta;
+                arrTicks[i] = this.datVencimento;
+            });
+            Avaliador.plotaGrafico(arrValor, arrTicks);
         }
+    });
+};
+
+Avaliador.plotaGrafico = function(arrValor, arrTicks) {
+    $.jqplot.config.enablePlugins = true;
+    plot1 = $.jqplot('chart1', [arrValor], {
+        animate: !$.jqplot.use_excanvas,
+        seriesDefaults: {
+            renderer: $.jqplot.BarRenderer,
+            pointLabels: {show: true}
+        },
+        axes: {
+            xaxis: {
+                renderer: $.jqplot.CategoryAxisRenderer,
+                ticks: arrTicks
+            },
+            yaxis: {
+                tickOptions: {
+                    formatString: "R$ %'d"
+                },
+                rendererOptions: {
+                    forceTickAt0: true
+                }
+            }
+        },
+        highlighter: {show: true}
     });
 };
 
@@ -33,24 +66,5 @@ $(function() {
         Avaliador.pesquisarRelatorio();
     });
 
-    $.jqplot.config.enablePlugins = true;
-    var s1 = [2, 6, 7, 10];
-    var ticks = ['a', 'b', 'c', 'd'];
-
-    plot1 = $.jqplot('resultadoPesquisa', [s1], {
-        // Only animate if we're not using excanvas (not in IE 7 or IE 8)..
-        animate: !$.jqplot.use_excanvas,
-        seriesDefaults: {
-            renderer: $.jqplot.BarRenderer,
-            pointLabels: {show: true}
-        },
-        axes: {
-            xaxis: {
-                renderer: $.jqplot.CategoryAxisRenderer,
-                ticks: ticks
-            }
-        },
-        highlighter: {show: false}
-    });
 
 });

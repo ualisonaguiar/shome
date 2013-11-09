@@ -1,37 +1,40 @@
-<html lang="pt-br">
-    <div class="container">
-        <div class="container-fluid">
-            <h1>Relatório das Contas - Gráfico</h1>
-            <form action="#" method="post" id="formRelatorioGrafico" class="form-actions">
-                <div class="pull pull-right">
-                    <a href="#" id="pesquisar" class="btn btn-primary"><i class="icon-search icon-white"></i>
-                        &nbsp;Pesquisa
-                    </a>
-                    <button type="reset" class="btn">
-                        <i class="icon-refresh"></i>&nbsp;
-                        Limpar
-                    </button>
-                </div>
-                <div>
-                    <p>Informe a periodicidade das contas:</p>
-                    <select id="periodicidadeConta" name="periodicidade" required="required">
-                        <option label="Selecione" value="">Selecione</option>
-                        <option label="Mensal" value="2">Mensal</option>
-                        <option label="Bimestral" value="3">Bimestral</option>
-                        <option label="Trimestral" value="4">Trimestral</option>
-                        <option label="Semestral" value="5">Semestral</option>
-                        <option label="Anual" value="6">Anual</option>
-                    </select>
-                </div>
-                <div>
-                    <p>Informe o período de acordo com a periodicidade:</p>
-                    <input type="text" class="input-small data" id="dataInicio" name="dataInicio" required="true">
-                    &nbsp;à&nbsp;
-                    <input type="text" class="input-small data" id="dataFim" name="dataFim" required="true">
-                </div>
-            </form>
-            <div id="resultadoPesquisa" class=""></div>
-        </div>
-    </div>
-</html>
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/library/jqplot/plugins/jqplot.barRenderer.min.js"); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/library/jqplot/plugins/jqplot.pieRenderer.min.js"); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/library/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/library/jqplot/plugins/jqplot.pointLabels.min.js"); ?>"></script>
+
 <script type="text/javascript" src="<?php echo $this->baseUrl("/public/js/includes/relatorio/grafico.js"); ?>"></script>
+<div class="container">
+    <div class="container-fluid">
+        <h1>Relatório das Contas - Gráfico</h1>
+        <form action="#" method="post" id="formRelatorioGrafico" class="form-actions">
+            <div class="pull pull-right">
+                <a href="#" id="pesquisar" class="btn btn-primary"><i class="icon-search icon-white"></i>
+                    &nbsp;Pesquisa
+                </a>
+                <button type="reset" class="btn">
+                    <i class="icon-refresh"></i>&nbsp;
+                    Limpar
+                </button>
+            </div>
+            <div>
+                <p>Informe a periodicidade das contas:</p>
+                <select id="periodicidadeConta" name="periodicidade" required="required">
+                    <option label="Selecione" value="">Selecione</option>
+                    <option label="Mensal" value="2">Mensal</option>
+                    <option label="Bimestral" value="3">Bimestral</option>
+                    <option label="Trimestral" value="4">Trimestral</option>
+                    <option label="Semestral" value="5">Semestral</option>
+                    <option label="Anual" value="6">Anual</option>
+                </select>
+            </div>
+            <div>
+                <p>Informe o período de acordo com a periodicidade:</p>
+                <input type="text" class="input-small data" id="dataInicio" name="dataInicio" required="true">
+                &nbsp;à&nbsp;
+                <input type="text" class="input-small data" id="dataFim" name="dataFim" required="true">
+            </div>
+        </form>
+        <div id="chart1" class=""></div>
+    </div>
+</div>

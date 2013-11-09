@@ -22,7 +22,7 @@ class NDefault_RelatorioNegocio extends PDefault_Models_Conta
         $strDatInicio = $zendData->get('YYYY-MM-dd');
         $zendData = new Zend_Date($strDatFim);
         $strDatFim = $zendData->get('YYYY-MM-dd');
-        
+
         $objDb = $this->getDefaultAdapter();
         $sql = $objDb->select()
             ->from(
