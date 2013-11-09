@@ -23,6 +23,18 @@ class Default_RelatorioController extends Default_SegurancaController
 
     public function pesquisarResultadoGraficoAction()
     {
-        exit('sasa');
+        $this->_helper->viewRenderer->setNoRender();
+        $this->_helper->layout->disableLayout();        
+        if ( $this->getRequest()->isPost() ) {
+            $arrPost = $this->getAllParams();
+            
+            $nRelatorio = new NDefault_RelatorioNegocio();
+            $arrValorConta = $nRelatorio->relatorioSemestral($arrPost['datInicio'], $arrPost['datFim']);
+            echo Zend_Json_Encoder::encode(
+                array(
+                    'data' => $arrValorConta
+                )
+            );
+        }
     }
 }

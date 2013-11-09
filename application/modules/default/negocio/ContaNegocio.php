@@ -171,10 +171,12 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
             )
             ->joinInner(
                 array(
-                'cd' => $this->_schema . '.detalhes_conta'
-                ), 'c.chv_conta = cd.chv_conta', array(
-                'dataVencimento' => "to_char(dat_vencimento, 'DD/MM/YYYY')",
-                'valorConta' => 'vlr_conta', 'nr_parcela'
+                    'cd' => $this->_schema . '.detalhes_conta'
+                ),
+                'c.chv_conta = cd.chv_conta',
+                array(
+                    'dataVencimento' => "to_char(dat_vencimento, 'DD/MM/YYYY')",
+                    'valorConta' => 'vlr_conta', 'nr_parcela'
                 )
             )
             ->where('cd.dat_pagamento is null')
