@@ -28,10 +28,12 @@ class NDefault_RelatorioNegocio extends PDefault_Models_Conta
             ->from(
                 array ('contaDetalhes' => $this->_schema . '.detalhes_conta'),
                 array(
-                    'totalConta' => 'sum(vlr_conta)',
+                    'totalConta' => "sum(vlr_conta)",
                     'datVencimento' => "to_char(dat_vencimento, 'MM/YYYY')"
                 )
             )
+            ->where('dat_vencimento >= ?', $strDatInicio)
+            ->where('dat_vencimento <= ?', $strDatFim)
             ->group(array ('datVencimento'))
             ->order('datVencimento')
             ->query();
