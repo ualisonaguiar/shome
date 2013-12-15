@@ -16,6 +16,10 @@
  */
 class Default_RelatorioController extends Default_SegurancaController
 {
+    public function graficoAction() 
+    {
+        
+    }    
     
     public function pesquisarResultadoGraficoAction()
     {
