@@ -16,7 +16,7 @@
  */
 class NDefault_RelatorioNegocio extends PDefault_Models_Conta
 {
-    public function relatorioSemestral($strDatInicio, $strDatFim)
+    public function relatorioMensal($strDatInicio, $strDatFim)
     {
         $zendData = new Zend_Date($strDatInicio);
         $strDatInicio = $zendData->get('YYYY-MM-dd');
@@ -24,7 +24,7 @@ class NDefault_RelatorioNegocio extends PDefault_Models_Conta
         $strDatFim = $zendData->get('YYYY-MM-dd');
 
         $objDb = $this->getDefaultAdapter();
-        $sql = $objDb->select()
+        $query = $objDb->select()
             ->from(
                 array ('contaDetalhes' => $this->_schema . '.detalhes_conta'),
                 array(
@@ -35,8 +35,8 @@ class NDefault_RelatorioNegocio extends PDefault_Models_Conta
             ->where('dat_vencimento >= ?', $strDatInicio)
             ->where('dat_vencimento <= ?', $strDatFim)
             ->group(array ('datVencimento'))
-            ->order('datVencimento')
+            
             ->query();
-        return $sql->fetchAll();
+        return $query->fetchAll();
     }
 }

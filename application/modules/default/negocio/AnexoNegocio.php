@@ -30,6 +30,11 @@ class NDefault_AnexoNegocio extends PDefault_Models_Anexo
             try {
                 $nmArquivo = md5(mt_rand(1, 10000));
                 $pathArquivo = PATH_FILE . '/' . $nmArquivo;
+                
+                if (!is_dir(PATH_FILE)) {
+                    mkdir(PATH_FILE);
+                }
+                
                 //Fazendo o upload do arquivo
                 if ( copy($file['tmp_name'], $pathArquivo) ) {
                     $dadoFile->caminho_file = $pathArquivo;
@@ -50,7 +55,7 @@ class NDefault_AnexoNegocio extends PDefault_Models_Anexo
     }
 
     /**
-     * Método responsável pela listagem das contas
+     * Método responsável pela listagem dos anexos da conta
      *
      * @param type $chvFile
      * @return ArrayIterator
@@ -62,6 +67,22 @@ class NDefault_AnexoNegocio extends PDefault_Models_Anexo
             $where['chv_file = ?'] = $chvFile;
         }
         return $this->fetchAll($where, 'dat_inclusao desc')->toArray();
+    }
+
+    /**
+     * Método responsável pela listagem dos anexos postados pelas contas
+     *
+     * @param type $chvFile
+     * @return ArrayIterator
+     */
+    public function listagemGerenciamento()
+    {
+        $arrListagemArquivo = $this->fetchAll(
+            $this->select()
+                ->order('dat_inclusao desc')
+                ->limit(100, 1));
+        
+        return $arrListagemArquivo->toArray();
     }
 
     /**

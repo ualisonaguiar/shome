@@ -29,7 +29,7 @@ class Default_GerenciamentoController extends Default_SegurancaController
 
         //recuperando a listagem dos arquivos
         $nArquivos = new NDefault_AnexoNegocio();
-        $coArquivos = $nArquivos->listagem();
+        $coArquivos = $nArquivos->listagemGerenciamento();
         $this->view->coArquivos = $coArquivos;
     }
 

@@ -14,13 +14,11 @@
  * @since 1.0
  * @date 26/02/2012
  */
-class Default_RelatorioController extends Default_SegurancaController {
-
-    public function graficoAction() {
-        //http://www.jqplot.com/tests/cursor-highlighter.php
-    }
-
-    public function pesquisarResultadoGraficoAction() {
+class Default_RelatorioController extends Default_SegurancaController
+{
+    
+    public function pesquisarResultadoGraficoAction()
+    {
         $this->_helper->viewRenderer->setNoRender();
         $this->_helper->layout->disableLayout();
 
@@ -28,7 +26,7 @@ class Default_RelatorioController extends Default_SegurancaController {
             $arrPost = $this->getAllParams();
 
             $nRelatorio = new NDefault_RelatorioNegocio();
-            $arrValorConta = $nRelatorio->relatorioSemestral($arrPost['datInicio'], $arrPost['datFim']);
+            $arrValorConta = $nRelatorio->relatorioMensal($arrPost['datInicio'], $arrPost['datFim']);
 
             $arrCores = array( 'AFD8F8', 'F6BD0F', '8BBA00', 'FF8E46', '008E8E', 'D64646', '8E468E',
                 '588526', 'B3AA00', '008ED6', '9D080D', 'A186BE'
@@ -66,5 +64,4 @@ class Default_RelatorioController extends Default_SegurancaController {
             unlink(__APP__ . '/data/xml/'.$arrPost['strPathXml']);
         }
     }
-
 }
