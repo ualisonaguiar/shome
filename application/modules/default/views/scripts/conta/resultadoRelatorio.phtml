@@ -1,0 +1,51 @@
+<legend>Resultado da pesquisa</legend>
+<?php if (count($this->resultados) != 0) : ?>
+    <script type="text/javascript">
+        $(function() {
+            $('#myTab a[href="#resultado"]').tab('show');
+        });
+    </script>
+    <label>Quantidade: <?php echo count($this->resultados); ?></label>
+    <label>Total das contas: R$ <?php echo $this->totalConta; ?></label>
+    <?php if (!empty($this->totalPago)) : ?>
+        <label>Total pago: R$ <?php echo $this->totalPago; ?></label>
+    <?php endif; ?>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome da conta</th>
+                <th>Entidade</th>
+                <th>Tipo da conta</th>
+                <th>Parcela</th>
+                <th>Data de vencimento</th>
+                <th>Data de pagamento</th>
+                <th>Valor da fatura</th>
+                <th>Valor pago</th>
+            </tr>
+        </thead>
+        <tbody role="alert" aria-live="polite" aria-relevant="all">
+            <?php foreach ($this->resultados as $resultado) : ?>
+                <tr>
+                    <td>
+                        <a href="<?php echo $this->baseUrl('conta/editar/id/' . $resultado['chv_conta']); ?>">
+                            <?php if (!empty($resultado['dataPagamento'])) : ?>
+                                <strike><?php echo $resultado['nomeConta']; ?></strike>
+                            <?php else: ?>
+                                <?php echo $resultado['nomeConta']; ?>
+                            <?php endif; ?>
+                        </a>
+                    </td>
+                    <td><?php echo $resultado['pj']; ?></td>
+                    <td><?php echo $resultado['tp']; ?></td>
+                    <td>
+                        <?php echo (empty($resultado['nr_parcela']) || $resultado['nr_parcela'] == 0) ? '-' : $resultado['nr_parcela']; ?>
+                    </td>
+                    <td><?php echo $resultado['dataVencimento']; ?></td>
+                    <td><?php echo $resultado['dataPagamento']; ?></td>
+                    <td>R$ <?php echo number_format($resultado['valorConta'], 2, ',', ' '); ?></td>
+                    <td>R$ <?php echo ($resultado['valorPago'] == '0,00') ? '-' : number_format($resultado['valorPago'], 2, ',', ' '); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
