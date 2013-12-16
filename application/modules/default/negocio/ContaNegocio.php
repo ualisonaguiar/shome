@@ -368,37 +368,44 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
         $sql = $objDb->select()
             ->from(
                 array(
-                'c' => $this->_schema . '.' . $this->_name), array(
-                'nomeConta' => 'c.nom_conta',
-                'usuario' => 'c.chv_usuario', 'c.chv_conta'
+                    'c' => $this->_schema . '.' . $this->_name
+                ),
+                array(
+                    'nomeConta' => 'c.nom_conta',
+                    'usuario' => 'c.chv_usuario', 'c.chv_conta'
                 )
             )
             ->joinInner(
                 array(
-                'tp' => $this->_schema . '.tipo_conta'
-                ), 'c.chv_tp_conta = tp.chv_tp_conta', array(
-                'tp' => 'nom_tipo', 'chv_tp_conta'
+                    'tp' => $this->_schema . '.tipo_conta'
+                ),
+                'c.chv_tp_conta = tp.chv_tp_conta', array(
+                    'tp' => 'nom_tipo', 'chv_tp_conta'
                 )
             )
             ->joinInner(
                 array(
-                'pj' => 'pessoa.pessoa_juridica'
-                ), 'c.chv_entidade = pj.chv_pessoa_juridica', array(
-                'pj' => 'nom_pessoa', 'chv_pessoa_juridica'
+                    'pj' => 'pessoa.pessoa_juridica'
+                ),
+                'c.chv_entidade = pj.chv_pessoa_juridica',
+                array(
+                    'pj' => 'nom_pessoa', 'chv_pessoa_juridica'
                 )
             )
             ->joinInner(
                 array(
-                'cd' => $this->_schema . '.detalhes_conta'
-                ), 'c.chv_conta = cd.chv_conta', array(
-                'dataVencimento' => "to_char(dat_vencimento, 'DD/MM/YYYY')",
-                'valorConta' => 'vlr_conta',
-                'nr_parcela',
-                'dataPagamento' => "to_char(dat_pagamento, 'DD/MM/YYYY')",
-                'valorPago' => 'vlr_pagamento'
+                    'cd' => $this->_schema . '.detalhes_conta'
+                ),
+                'c.chv_conta = cd.chv_conta',
+                array(
+                    'dataVencimento' => "to_char(dat_vencimento, 'DD/MM/YYYY')",
+                    'valorConta' => 'vlr_conta',
+                    'nr_parcela',
+                    'dataPagamento' => "to_char(dat_pagamento, 'DD/MM/YYYY')",
+                    'valorPago' => 'vlr_pagamento'
                 )
             )
-            ->order(array('dat_vencimento','c.nom_conta'));
+            ->order(array('cd.nr_parcela', 'dat_vencimento'));
         //Filtros
         if ( !empty($aFiltro['chv_tp_conta']) ) {
             $sql->where('c.chv_tp_conta = ?', $aFiltro['chv_tp_conta']);
@@ -427,7 +434,6 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
         if ( !empty($aFiltro['nom_conta']) ) {
             $sql->where('c.nom_conta = ?', $aFiltro['nom_conta']);
         }
-
         return $sql->query()->fetchAll();
     }
 
