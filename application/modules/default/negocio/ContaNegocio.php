@@ -365,7 +365,7 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
     public function listagemConta($aFiltro = null)
     {
         $objDb = $this->getDefaultAdapter();
-        $sql = $objDb->select()
+        $queryBanco = $objDb->select()
             ->from(
                 array(
                     'c' => $this->_schema . '.' . $this->_name
@@ -405,36 +405,37 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
                     'valorPago' => 'vlr_pagamento'
                 )
             )
-            ->order(array('cd.nr_parcela', 'dat_vencimento'));
+            ->order(array('cd.nr_parcela', 'dataVencimento'));
+        
         //Filtros
         if ( !empty($aFiltro['chv_tp_conta']) ) {
-            $sql->where('c.chv_tp_conta = ?', $aFiltro['chv_tp_conta']);
+            $queryBanco->where('c.chv_tp_conta = ?', $aFiltro['chv_tp_conta']);
         }
 
         if ( !empty($aFiltro['chv_entidade']) ) {
-            $sql->where('c.chv_entidade = ?', $aFiltro['chv_entidade']);
+            $queryBanco->where('c.chv_entidade = ?', $aFiltro['chv_entidade']);
         }
 
         if ( !empty($aFiltro['data_venc_inicial']) &&
             !empty($aFiltro['data_venc_final']) ) {
             $data = new Zend_Date($aFiltro['data_venc_inicial']);
-            $sql->where('cd.dat_vencimento >= ?', $data->get('YYYY-MM-dd'));
+            $queryBanco->where('cd.dat_vencimento >= ?', $data->get('YYYY-MM-dd'));
             $data = new Zend_Date($aFiltro['data_venc_final']);
-            $sql->where('cd.dat_vencimento <= ?', $data->get('YYYY-MM-dd'));
+            $queryBanco->where('cd.dat_vencimento <= ?', $data->get('YYYY-MM-dd'));
         }
 
         if ( !empty($aFiltro['data_pag_inicial']) &&
             !empty($aFiltro['data_pag_final']) ) {
             $data = new Zend_Date($aFiltro['data_pag_inicial']);
-            $sql->where('cd.dat_pagamento >= ?', $data->get('YYYY-MM-dd'));
+            $queryBanco->where('cd.dat_pagamento >= ?', $data->get('YYYY-MM-dd'));
             $data = new Zend_Date($aFiltro['data_pag_final']);
-            $sql->where('cd.dat_pagamento <= ?', $data->get('YYYY-MM-dd'));
+            $queryBanco->where('cd.dat_pagamento <= ?', $data->get('YYYY-MM-dd'));
         }
 
         if ( !empty($aFiltro['nom_conta']) ) {
-            $sql->where('c.nom_conta = ?', $aFiltro['nom_conta']);
+            $queryBanco->where('c.nom_conta = ?', $aFiltro['nom_conta']);
         }
-        return $sql->query()->fetchAll();
+        return $queryBanco->query()->fetchAll();
     }
 
     /**
