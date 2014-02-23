@@ -181,6 +181,7 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
             )
             ->where('cd.dat_pagamento is null')
             ->order(array('dat_vencimento','c.nom_conta'))
+            ->limit(500)
             ->query();
         return $sql->fetchAll();
     }

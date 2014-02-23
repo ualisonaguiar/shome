@@ -27,7 +27,7 @@
             <?php foreach ($this->resultados as $resultado) : ?>
                 <tr>
                     <td>
-                        <a href="<?php echo $this->baseUrl('conta/editar/id/' . $resultado['chv_conta']); ?>">
+                        <a href="<?php echo $this->baseUrl('conta/editar/id/' . $resultado['chv_conta']); ?>" target="_blank" title="<?php echo $resultado['nomeConta']; ?>">
                             <?php if (!empty($resultado['dataPagamento'])) : ?>
                                 <strike><?php echo $resultado['nomeConta']; ?></strike>
                             <?php else: ?>
