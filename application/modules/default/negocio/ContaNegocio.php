@@ -405,7 +405,7 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
                     'valorPago' => 'vlr_pagamento'
                 )
             )
-            ->order(array('cd.nr_parcela', 'dataVencimento'));
+            ->order(array('dataVencimento', 'cd.nr_parcela'));
         
         //Filtros
         if ( !empty($aFiltro['chv_tp_conta']) ) {

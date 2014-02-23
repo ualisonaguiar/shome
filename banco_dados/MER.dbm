@@ -1,0 +1,897 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel>
+<schema name="public" protected="true" rect-visible="true" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<schema name="acesso" rect-visible="true" fill-color="#d66b29">
+	<role name="postgres"/>
+</schema>
+
+<schema name="admin" rect-visible="true" fill-color="#a92ceb">
+	<role name="postgres"/>
+</schema>
+
+<schema name="conta" rect-visible="true" fill-color="#bb2103">
+	<role name="postgres"/>
+	<comment><![CDATA[Schema contendo as contas do usuário]]></comment>
+</schema>
+
+<schema name="mercado" rect-visible="true" fill-color="#5f5fef">
+	<role name="postgres"/>
+</schema>
+
+<schema name="pessoa" rect-visible="true" fill-color="#10fc4c">
+	<role name="postgres"/>
+</schema>
+
+<database name="shome" encoding="UTF8" lc-collate="Portuguese_Brazil" lc-ctype="Portuguese_Brazil">
+	<role name="postgres"/>
+	<tablespace name="pg_default"/>
+</database>
+
+<sequence name="usuario_chv_usuario_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="acesso"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="usuario">
+	<schema name="acesso"/>
+	<role name="postgres"/>
+	<position x="1156" y="50"/>
+	<column name="chv_usuario" not-null="true" default-value="nextval('usuario_chv_usuario_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do usuário]]></comment>
+	</column>
+	<column name="nom_usuario" not-null="true">
+		<type name="character varying" length="100"/>
+		<comment><![CDATA[Nome do usuário]]></comment>
+	</column>
+	<column name="cpf_usuario" not-null="true">
+		<type name="character varying" length="11"/>
+		<comment><![CDATA[Cpf do usuário]]></comment>
+	</column>
+	<column name="ds_email">
+		<type name="character varying" length="100"/>
+		<comment><![CDATA[E-mail do usuário]]></comment>
+	</column>
+	<column name="ds_login">
+		<type name="character varying" length="50"/>
+		<comment><![CDATA[Login do usuário]]></comment>
+	</column>
+	<column name="ds_senha">
+		<type name="character varying" length="32"/>
+		<comment><![CDATA[Senha do usuário]]></comment>
+	</column>
+	<column name="ds_status" default-value="true">
+		<type name="boolean"/>
+		<comment><![CDATA[Status se o usuário esta ativo]]></comment>
+	</column>
+	<column name="dat_exclusao">
+		<type name="timestamp"/>
+		<comment><![CDATA[Data de exclusão do usuário]]></comment>
+	</column>
+	<constraint name="pk_acesso_chv_usuario" type="pk-constr" factor="100" table="acesso.usuario">
+		<columns names="chv_usuario" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="backup_chv_backup_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="admin"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="backup">
+	<schema name="admin"/>
+	<role name="postgres"/>
+	<position x="1503" y="50"/>
+	<column name="chv_backup" not-null="true" default-value="nextval('backup_chv_backup_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[chave serial]]></comment>
+	</column>
+	<column name="dsc_local" not-null="true">
+		<type name="character varying" length="300"/>
+		<comment><![CDATA[caminho do local]]></comment>
+	</column>
+	<column name="periodicidade" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[Periodicidade]]></comment>
+	</column>
+	<column name="status" default-value="true">
+		<type name="boolean"/>
+	</column>
+	<constraint name="pk_chv_backup" type="pk-constr" factor="100" table="admin.backup">
+		<columns names="chv_backup" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="backup_log_chv_backup_log_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="admin"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="backup_log">
+	<schema name="admin"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Tabela contendo o históricos dos backups]]></comment>
+	<position x="1860" y="162"/>
+	<column name="chv_backup_log" not-null="true" default-value="nextval('backup_log_chv_backup_log_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave primaria do backuk do log]]></comment>
+	</column>
+	<column name="chv_backup" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[Chave estrangeira da tabela backup]]></comment>
+	</column>
+	<column name="num_size_file" not-null="true">
+		<type name="numeric" length="10" precision="2"/>
+		<comment><![CDATA[Tamanho da pasta file]]></comment>
+	</column>
+	<column name="num_size_banco">
+		<type name="numeric" length="10" precision="2"/>
+		<comment><![CDATA[tamanho do arquivo do banco de dados]]></comment>
+	</column>
+	<column name="dat_log" default-value="now()">
+		<type name="timestamp"/>
+	</column>
+	<constraint name="pk_chv_backup_log" type="pk-constr" factor="100" table="admin.backup_log">
+		<columns names="chv_backup_log" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="email_chv_email_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="admin"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="email">
+	<schema name="admin"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Tabela contendo configuração de e-mai]]></comment>
+	<position x="2143" y="39"/>
+	<column name="chv_email" not-null="true" default-value="nextval('email_chv_email_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do e-mail]]></comment>
+	</column>
+	<column name="usuario" not-null="true">
+		<type name="character varying" length="255"/>
+		<comment><![CDATA[Usuário de e-mail]]></comment>
+	</column>
+	<column name="nome_usuario" not-null="true">
+		<type name="character varying" length="255"/>
+		<comment><![CDATA[Nome do usuário]]></comment>
+	</column>
+	<column name="senha_email" not-null="true">
+		<type name="character varying" length="255"/>
+		<comment><![CDATA[Senha do e-mail]]></comment>
+	</column>
+	<column name="servidor" not-null="true">
+		<type name="character varying" length="255"/>
+		<comment><![CDATA[Servidor de e-mail]]></comment>
+	</column>
+	<column name="dat_cadastro" default-value="now()">
+		<type name="timestamp"/>
+	</column>
+	<column name="status" default-value="true">
+		<type name="boolean"/>
+	</column>
+	<constraint name="pk_chv_email" type="pk-constr" factor="100" table="admin.email">
+		<columns names="chv_email" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="erro_chv_erro_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="admin"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="erro">
+	<schema name="admin"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Tabela contendo os registros dos erros do sistema]]></comment>
+	<position x="2487" y="50"/>
+	<column name="chv_erro" not-null="true" default-value="nextval('erro_chv_erro_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do erro]]></comment>
+	</column>
+	<column name="ds_file" not-null="true">
+		<type name="character" length="300"/>
+		<comment><![CDATA[Arquivo que gerou o erro]]></comment>
+	</column>
+	<column name="ds_line" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[Número da linha]]></comment>
+	</column>
+	<column name="ds_message" not-null="true">
+		<type name="text"/>
+		<comment><![CDATA[Mensagem gerado do erro do sistema]]></comment>
+	</column>
+	<column name="ds_trace">
+		<type name="text"/>
+		<comment><![CDATA[Tacert do erro]]></comment>
+	</column>
+	<column name="dat_log" default-value="now()">
+		<type name="timestamp" with-timezone="true"/>
+		<comment><![CDATA[Data do log]]></comment>
+	</column>
+	<column name="ds_status" default-value="true">
+		<type name="boolean"/>
+	</column>
+	<column name="dat_correcao">
+		<type name="timestamp"/>
+		<comment><![CDATA[Data da correção do log]]></comment>
+	</column>
+	<column name="ds_solucao">
+		<type name="text"/>
+		<comment><![CDATA[Solução do problema]]></comment>
+	</column>
+	<constraint name="pk_erro" type="pk-constr" factor="100" table="admin.erro">
+		<columns names="chv_erro" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="erro_trace_chv_erro_trace_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="admin"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="erro_trace">
+	<schema name="admin"/>
+	<role name="postgres"/>
+	<position x="2836" y="50"/>
+	<column name="chv_erro_trace" not-null="true" default-value="nextval('erro_trace_chv_erro_trace_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave de erro tracert]]></comment>
+	</column>
+	<column name="chv_erro" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do erro]]></comment>
+	</column>
+	<column name="ds_file">
+		<type name="character" length="200"/>
+		<comment><![CDATA[Descrição do arquivo]]></comment>
+	</column>
+	<column name="ds_line">
+		<type name="integer"/>
+		<comment><![CDATA[Linha do erro]]></comment>
+	</column>
+	<column name="ds_function">
+		<type name="character" length="100"/>
+		<comment><![CDATA[Nome da função]]></comment>
+	</column>
+	<column name="ds_class">
+		<type name="character" length="100"/>
+		<comment><![CDATA[Nome da classe]]></comment>
+	</column>
+	<constraint name="pk_chv_erro_trace" type="pk-constr" factor="100" table="admin.erro_trace">
+		<columns names="chv_erro_trace" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="log_cron_chv_log_cron_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="admin"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="log_cron">
+	<schema name="admin"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Registros das crons]]></comment>
+	<position x="1503" y="259.4"/>
+	<column name="chv_log_cron" not-null="true" default-value="nextval('log_cron_chv_log_cron_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do log da cron]]></comment>
+	</column>
+	<column name="tipo_cron" not-null="true">
+		<type name="character varying" length="100"/>
+		<comment><![CDATA[Tipo da cron rodada]]></comment>
+	</column>
+	<column name="dat_log" default-value="now()">
+		<type name="timestamp"/>
+	</column>
+	<constraint name="pk_chv_log" type="pk-constr" factor="100" table="admin.log_cron">
+		<columns names="chv_log_cron" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="conta_chv_conta_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="conta"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="conta_arquivo">
+	<schema name="conta"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Tabela responsável pela vinculação entre a conta e o arquivo]]></comment>
+	<position x="398" y="384.8"/>
+	<column name="chv_conta" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[Chave da conta]]></comment>
+	</column>
+	<column name="chv_arquivo" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do arquivo]]></comment>
+	</column>
+	<column name="tipo_arquivo">
+		<type name="integer"/>
+		<comment><![CDATA[1 - Fatura, 2 - Recibo]]></comment>
+	</column>
+	<constraint name="unique_conta_arquivo" type="uq-constr" factor="100" table="conta.conta_arquivo">
+		<columns names="chv_conta,chv_arquivo" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="conta">
+	<schema name="conta"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Tabela contendo os dados da conta]]></comment>
+	<position x="50" y="384.8"/>
+	<column name="chv_conta" not-null="true" default-value="nextval('conta_chv_conta_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[chave da conta]]></comment>
+	</column>
+	<column name="chv_tp_conta" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do tipo da conta]]></comment>
+	</column>
+	<column name="chv_entidade" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[Chave da entidade]]></comment>
+	</column>
+	<column name="chv_usuario" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[Usuário responsável pela conta]]></comment>
+	</column>
+	<column name="nom_conta" not-null="true">
+		<type name="character varying" length="400"/>
+		<comment><![CDATA[Nome da entidade]]></comment>
+	</column>
+	<column name="dat_atualizacao" default-value="now()">
+		<type name="timestamp"/>
+		<comment><![CDATA[Data de atualização]]></comment>
+	</column>
+	<constraint name="pk_chv_conta" type="pk-constr" factor="100" table="conta.conta">
+		<columns names="chv_conta" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="detalhes_conta_chv_detalhe_conta_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="conta"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="detalhes_conta">
+	<schema name="conta"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Detalhes da conta]]></comment>
+	<position x="637" y="384.8"/>
+	<column name="chv_detalhe_conta" not-null="true" default-value="nextval('detalhes_conta_chv_detalhe_conta_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave da tabela dos detalhes da conta]]></comment>
+	</column>
+	<column name="chv_conta" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[Chave da conta]]></comment>
+	</column>
+	<column name="dat_vencimento" not-null="true">
+		<type name="date"/>
+		<comment><![CDATA[Data de vencimento da conta]]></comment>
+	</column>
+	<column name="dat_pagamento">
+		<type name="date"/>
+		<comment><![CDATA[Data de pagamento]]></comment>
+	</column>
+	<column name="vlr_conta" not-null="true">
+		<type name="numeric" length="10" precision="2"/>
+		<comment><![CDATA[Valor da conta]]></comment>
+	</column>
+	<column name="vlr_pagamento">
+		<type name="numeric" length="10" precision="2"/>
+		<comment><![CDATA[Valor do pagamento]]></comment>
+	</column>
+	<column name="observacao">
+		<type name="text"/>
+		<comment><![CDATA[Observação sobre a conta]]></comment>
+	</column>
+	<column name="nr_parcela">
+		<type name="integer"/>
+		<comment><![CDATA[Número de parcelas]]></comment>
+	</column>
+	<constraint name="pk_chv_detalhe" type="pk-constr" factor="100" table="conta.detalhes_conta">
+		<columns names="chv_detalhe_conta" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="tipo_conta_chv_tp_conta_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="conta"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="tipo_conta">
+	<schema name="conta"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Tabela contendo os tipos de conta]]></comment>
+	<position x="956" y="384.8"/>
+	<column name="chv_tp_conta" not-null="true" default-value="nextval('tipo_conta_chv_tp_conta_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do tipo de conta]]></comment>
+	</column>
+	<column name="nom_tipo" not-null="true">
+		<type name="character varying" length="150"/>
+		<comment><![CDATA[Nome do tipo da conta]]></comment>
+	</column>
+	<column name="dat_atualizacao" default-value="now()">
+		<type name="timestamp"/>
+	</column>
+	<column name="chv_tp_conta_pai">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do tipo de conta ]]></comment>
+	</column>
+	<constraint name="pk_chv_tp_conta" type="pk-constr" factor="100" table="conta.tipo_conta">
+		<columns names="chv_tp_conta" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="mercado_chv_mercado_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="mercado"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="mercado">
+	<schema name="mercado"/>
+	<role name="postgres"/>
+	<position x="1328" y="384.8"/>
+	<column name="chv_mercado" not-null="true" default-value="nextval('mercado_chv_mercado_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do mercado]]></comment>
+	</column>
+	<column name="chv_pessoa_juridica" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[Chave da pessoa jurídica]]></comment>
+	</column>
+	<column name="ds_status" default-value="true">
+		<type name="boolean"/>
+	</column>
+	<constraint name="pk_chv_mercado" type="pk-constr" factor="100" table="mercado.mercado">
+		<columns names="chv_mercado" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="produto_chv_produto_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="mercado"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="produto">
+	<schema name="mercado"/>
+	<role name="postgres"/>
+	<position x="1613" y="384.8"/>
+	<column name="chv_produto" not-null="true" default-value="nextval('produto_chv_produto_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do produto]]></comment>
+	</column>
+	<column name="chv_secao" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[Chave da sessão]]></comment>
+	</column>
+	<column name="chv_unidade_medida" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[Chave da uniade de medida]]></comment>
+	</column>
+	<column name="nom_produto" not-null="true">
+		<type name="character varying" length="450"/>
+		<comment><![CDATA[Nome do produto]]></comment>
+	</column>
+	<column name="ds_caminho_foto">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="observacao">
+		<type name="text"/>
+	</column>
+	<column name="ds_status" default-value="true">
+		<type name="boolean"/>
+	</column>
+	<column name="chv_pessoa_juridica">
+		<type name="integer"/>
+	</column>
+	<constraint name="pk_chv_produto" type="pk-constr" factor="100" table="mercado.produto">
+		<columns names="chv_produto" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="sessao_chv_sessao_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="mercado"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="secao">
+	<schema name="mercado"/>
+	<role name="postgres"/>
+	<position x="1995" y="384.8"/>
+	<column name="chv_secao" not-null="true" default-value="nextval('sessao_chv_sessao_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[chave da sessão do produto]]></comment>
+	</column>
+	<column name="nom_sessao" not-null="true">
+		<type name="character varying" length="255"/>
+		<comment><![CDATA[Nome da sessão]]></comment>
+	</column>
+	<column name="ds_status" default-value="true">
+		<type name="boolean"/>
+	</column>
+	<constraint name="pk_chv_secao" type="pk-constr" factor="100" table="mercado.secao">
+		<columns names="chv_secao" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="pessoa_juridica_chv_pessoa_juridica_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="pessoa"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="pessoa_juridica">
+	<schema name="pessoa"/>
+	<role name="postgres"/>
+	<position x="2340" y="384.8"/>
+	<column name="chv_pessoa_juridica" not-null="true" default-value="nextval('pessoa_juridica_chv_pessoa_juridica_seq'::regclass)">
+		<type name="integer"/>
+	</column>
+	<column name="cnpj_pessoa_juridica">
+		<type name="character varying" length="60"/>
+	</column>
+	<column name="nom_pessoa" not-null="true">
+		<type name="character varying" length="200"/>
+	</column>
+	<column name="nom_fantasia" not-null="true">
+		<type name="character varying" length="200"/>
+	</column>
+	<column name="ds_site">
+		<type name="character varying" length="50"/>
+		<comment><![CDATA[Site da entidade]]></comment>
+	</column>
+	<column name="ds_status" default-value="true">
+		<type name="boolean"/>
+		<comment><![CDATA[Status da entidade]]></comment>
+	</column>
+	<column name="chv_tp_pessoa">
+		<type name="integer"/>
+		<comment><![CDATA[Chave estrangeira de tipo pessoa jurídica]]></comment>
+	</column>
+	<constraint name="chv_pessoa_juridica" type="pk-constr" factor="100" table="pessoa.pessoa_juridica">
+		<columns names="chv_pessoa_juridica" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="pessoa_juridica_endereco">
+	<schema name="pessoa"/>
+	<role name="postgres"/>
+	<position x="2721" y="384.8"/>
+	<column name="chv_pessoa_juridica">
+		<type name="integer"/>
+		<comment><![CDATA[Chave da pessoa juridica]]></comment>
+	</column>
+	<column name="chv_endereco" not-null="true">
+		<type name="integer"/>
+		<comment><![CDATA[chave do endereço]]></comment>
+	</column>
+	<constraint name="uk_pessoa_juridica_endereco" type="uq-constr" factor="100" table="pessoa.pessoa_juridica_endereco">
+		<columns names="chv_pessoa_juridica,chv_endereco" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="tipo_pessoa_chv_tp_pessoa_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="pessoa"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="tipo_pessoa">
+	<schema name="pessoa"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Tipo de pessoa jurídica]]></comment>
+	<position x="3006" y="384.8"/>
+	<column name="chv_tp_pessoa" not-null="true" default-value="nextval('tipo_pessoa_chv_tp_pessoa_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do tipo de pessoa]]></comment>
+	</column>
+	<column name="ds_tipo_pessoa">
+		<type name="character varying" length="255"/>
+		<comment><![CDATA[Tipo de pessoa jurídica]]></comment>
+	</column>
+	<constraint name="pk_pessoa_chv_tp_pessoa" type="pk-constr" factor="100" table="pessoa.tipo_pessoa">
+		<columns names="chv_tp_pessoa" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="endereco_chv_endereco_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="endereco">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="50" y="50"/>
+	<column name="chv_endereco" not-null="true" default-value="nextval('endereco_chv_endereco_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do endereço]]></comment>
+	</column>
+	<column name="ds_logradouro" not-null="true">
+		<type name="character varying" length="200"/>
+		<comment><![CDATA[Logradouro do endereço]]></comment>
+	</column>
+	<column name="ds_bairro">
+		<type name="character varying" length="200"/>
+		<comment><![CDATA[Bairro do endereço]]></comment>
+	</column>
+	<column name="ds_complemento">
+		<type name="character varying" length="400"/>
+		<comment><![CDATA[Complemento]]></comment>
+	</column>
+	<column name="ds_cep">
+		<type name="character varying" length="8"/>
+		<comment><![CDATA[Cep]]></comment>
+	</column>
+	<column name="chv_cidade">
+		<type name="integer"/>
+	</column>
+	<column name="ds_tp_logradouro">
+		<type name="character varying" length="400"/>
+		<comment><![CDATA[Tipo logradouro]]></comment>
+	</column>
+	<column name="dat_cadastro" default-value="now()">
+		<type name="timestamp" with-timezone="true"/>
+		<comment><![CDATA[data de cadastro]]></comment>
+	</column>
+	<column name="ds_telefone1">
+		<type name="character varying" length="14"/>
+		<comment><![CDATA[1º Telefone]]></comment>
+	</column>
+	<column name="ds_telefone2">
+		<type name="character varying" length="14"/>
+	</column>
+	<constraint name="pk_chv_endereco" type="pk-constr" factor="100" table="public.endereco">
+		<columns names="chv_endereco" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="file_chv_file_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="file">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="425" y="50"/>
+	<column name="chv_file" not-null="true" default-value="nextval('file_chv_file_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave do arquivo]]></comment>
+	</column>
+	<column name="nm_file" not-null="true">
+		<type name="character varying" length="400"/>
+	</column>
+	<column name="caminho_file" not-null="true">
+		<type name="character varying" length="400"/>
+	</column>
+	<column name="extensao_file" not-null="true">
+		<type name="character varying" length="5"/>
+	</column>
+	<column name="size_file">
+		<type name="numeric" length="10" precision="2"/>
+	</column>
+	<column name="dat_inclusao" default-value="now()">
+		<type name="timestamp"/>
+	</column>
+	<column name="md5">
+		<type name="character varying" length="32"/>
+		<comment><![CDATA[MD5 do arquivo]]></comment>
+	</column>
+	<column name="type_file">
+		<type name="character varying" length="50"/>
+		<comment><![CDATA[tipo de arquivo]]></comment>
+	</column>
+	<constraint name="pk_chv_arquivo" type="pk-constr" factor="100" table="public.file">
+		<columns names="chv_file" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="unidade_medida_chv_unidade_medida_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="unidade_medida">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="760" y="50"/>
+	<column name="chv_unidade_medida" not-null="true" default-value="nextval('unidade_medida_chv_unidade_medida_seq'::regclass)">
+		<type name="integer"/>
+		<comment><![CDATA[Chave da uniade de medida]]></comment>
+	</column>
+	<column name="sg_unidade_medida">
+		<type name="character varying" length="300"/>
+		<comment><![CDATA[Nome da unidade de medida]]></comment>
+	</column>
+	<column name="idc_mascara">
+		<type name="smallint"/>
+		<comment><![CDATA[Máscara a ser aplicada no formato da unidade de medida]]></comment>
+	</column>
+	<constraint name="pk_chv_unidade_medida" type="pk-constr" factor="100" table="public.unidade_medida">
+		<columns names="chv_unidade_medida" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="fk_admin_backup_chv_backup" type="fk-constr"	 comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="admin.backup" table="admin.backup_log">
+	<columns names="chv_backup" ref-type="src-columns"/>
+	<columns names="chv_backup" ref-type="dst-columns"/>
+</constraint>
+<constraint name="fk_chv_erro" type="fk-constr"	 comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="admin.erro" table="admin.erro_trace">
+	<columns names="chv_erro" ref-type="src-columns"/>
+	<columns names="chv_erro" ref-type="dst-columns"/>
+</constraint>
+<constraint name="fk_conta_entidade" type="fk-constr"	 comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="pessoa.pessoa_juridica" table="conta.conta">
+	<columns names="chv_entidade" ref-type="src-columns"/>
+	<columns names="chv_pessoa_juridica" ref-type="dst-columns"/>
+</constraint>
+<constraint name="fk_conta_tipo_conta" type="fk-constr"	 comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="conta.tipo_conta" table="conta.conta">
+	<columns names="chv_tp_conta" ref-type="src-columns"/>
+	<columns names="chv_tp_conta" ref-type="dst-columns"/>
+</constraint>
+<constraint name="fk_conta_usuario" type="fk-constr"	 comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="acesso.usuario" table="conta.conta">
+	<columns names="chv_usuario" ref-type="src-columns"/>
+	<columns names="chv_usuario" ref-type="dst-columns"/>
+</constraint>
+<constraint name="fk_detalhe_conta_conta" type="fk-constr"	 comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="conta.conta" table="conta.detalhes_conta">
+	<columns names="chv_conta" ref-type="src-columns"/>
+	<columns names="chv_conta" ref-type="dst-columns"/>
+</constraint>
+<constraint name="pk_chv_tp_conta_conta" type="fk-constr"	 comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="conta.tipo_conta" table="conta.tipo_conta">
+	<columns names="chv_tp_conta_pai" ref-type="src-columns"/>
+	<columns names="chv_tp_conta" ref-type="dst-columns"/>
+</constraint>
+<constraint name="fk_chv_pessoa_juridica" type="fk-constr"	 comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="pessoa.pessoa_juridica" table="mercado.produto">
+	<columns names="chv_pessoa_juridica" ref-type="src-columns"/>
+	<columns names="chv_pessoa_juridica" ref-type="dst-columns"/>
+</constraint>
+<constraint name="pk_chv_secao" type="fk-constr"	 comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="mercado.secao" table="mercado.produto">
+	<columns names="chv_secao" ref-type="src-columns"/>
+	<columns names="chv_secao" ref-type="dst-columns"/>
+</constraint>
+<constraint name="fk_pessoa_juridica_tipo_pessoa" type="fk-constr"	 comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="pessoa.tipo_pessoa" table="pessoa.pessoa_juridica">
+	<columns names="chv_tp_pessoa" ref-type="src-columns"/>
+	<columns names="chv_tp_pessoa" ref-type="dst-columns"/>
+</constraint>
+<constraint name="fk_pessoa_juridica_endereco_pessoa_juridica" type="fk-constr"	 comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="pessoa.pessoa_juridica" table="pessoa.pessoa_juridica_endereco">
+	<columns names="chv_pessoa_juridica" ref-type="src-columns"/>
+	<columns names="chv_pessoa_juridica" ref-type="dst-columns"/>
+</constraint>
+<relationship name="rel_backup_log_backup" type="relfk"
+	 src-table="admin.backup_log"
+	 dst-table="admin.backup"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="rel_erro_trace_erro" type="relfk"
+	 src-table="admin.erro_trace"
+	 dst-table="admin.erro"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="rel_conta_pessoa_juridica" type="relfk"
+	 src-table="conta.conta"
+	 dst-table="pessoa.pessoa_juridica"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="rel_conta_tipo_conta" type="relfk"
+	 src-table="conta.conta"
+	 dst-table="conta.tipo_conta"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="rel_conta_usuario" type="relfk"
+	 src-table="conta.conta"
+	 dst-table="acesso.usuario"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="rel_detalhes_conta_conta" type="relfk"
+	 src-table="conta.detalhes_conta"
+	 dst-table="conta.conta"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="rel_tipo_conta_tipo_conta" type="relfk"
+	 src-table="conta.tipo_conta"
+	 dst-table="conta.tipo_conta"
+	 src-required="true" dst-required="true">
+	<line>
+		<position x="1276" y="418.56"/>
+	<position x="1276" y="374.8"/>
+	<position x="1162.67" y="374.8"/>
+	</line>
+</relationship>
+
+<relationship name="rel_produto_pessoa_juridica" type="relfk"
+	 src-table="mercado.produto"
+	 dst-table="pessoa.pessoa_juridica"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="rel_produto_secao" type="relfk"
+	 src-table="mercado.produto"
+	 dst-table="mercado.secao"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="rel_pessoa_juridica_tipo_pessoa" type="relfk"
+	 src-table="pessoa.pessoa_juridica"
+	 dst-table="pessoa.tipo_pessoa"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="rel_pessoa_juridica_endereco_pessoa_juridica" type="relfk"
+	 src-table="pessoa.pessoa_juridica_endereco"
+	 dst-table="pessoa.pessoa_juridica"
+	 src-required="true" dst-required="true"/>
+
+</dbmodel>
