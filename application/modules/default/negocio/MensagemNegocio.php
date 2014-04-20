@@ -61,20 +61,21 @@ class NDefault_MensagemNegocio extends PDefault_Models_Email
                 $config = $sql->fetchObject();
                 foreach ( $aEmails as $email ) {
                     $mail->setFrom(
-                            $config->usuario, $config->nome_usuario
-                        )
-                        ->addTo($email)
-                        ->setBodyHtml($mensagem)
-                        ->setSubject($assunto)
-                        ->send(
-                            self::getMailInstance(
-                                array(
-                                    'auth' => 'login',
-                                    'username' => $config->usuario,
-                                    'password' => $config->senha_email,
-                                    'smtp' => $config->servidor
-                                )
+                            $config->usuario,
+                            $config->nome_usuario
+                    )
+                    ->addTo($email)
+                    ->setBodyHtml($mensagem)
+                    ->setSubject($assunto)
+                    ->send(
+                        self::getMailInstance(
+                            array(
+                                'auth' => 'login',
+                                'username' => $config->usuario,
+                                'password' => $config->senha_email,
+                                'smtp' => $config->servidor
                             )
+                        )
                     );
                 }
             }
@@ -192,7 +193,7 @@ class NDefault_MensagemNegocio extends PDefault_Models_Email
                 'chv_email = ?' => $chvEmail
                 )
             );
-            
+
             if ( $status ) {
                 self::enviarEmail(
                     'Teste de configuração de e-mail', 'Teste de configuração de e-mail',

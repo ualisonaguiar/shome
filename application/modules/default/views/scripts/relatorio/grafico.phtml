@@ -7,16 +7,13 @@
                 <a href="#" id="pesquisar" class="btn btn-primary"><i class="icon-search icon-white"></i>
                     &nbsp;Pesquisa
                 </a>
-                <button type="reset" class="btn">
-                    <i class="icon-refresh"></i>&nbsp;
-                    Limpar
-                </button>
+                <a class="btn" href="/shome/relatorio/grafico"><i class="icon-refresh"></i>&nbsp;Limpar</a>
             </div>
             <div>
                 <p>Informe o período para geração do relatório:</p>
-                <input type="text" class="input-small data" id="dataInicio" name="dataInicio" required="true">
+                <input type="text" class="input-small data" id="dataInicio" name="dataInicio" required="true" value="01/01/<?php echo date('Y'); ?>">
                 &nbsp;à&nbsp;
-                <input type="text" class="input-small data" id="dataFim" name="dataFim" required="true">
+                <input type="text" class="input-small data" id="dataFim" name="dataFim" required="true" value="31/12/<?php echo date('Y'); ?>">
             </div>
         </form>
         <div id="graficoBarra" class=""></div>

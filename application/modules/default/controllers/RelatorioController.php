@@ -16,11 +16,11 @@
  */
 class Default_RelatorioController extends Default_SegurancaController
 {
-    public function graficoAction() 
+    public function graficoAction()
     {
-        
-    }    
-    
+
+    }
+
     public function pesquisarResultadoGraficoAction()
     {
         $this->_helper->viewRenderer->setNoRender();
@@ -51,7 +51,6 @@ class Default_RelatorioController extends Default_SegurancaController
                 $strXml .= "<set name='{$arrConta['datVencimento']}' value='{$arrConta['totalConta']}' color='{$strCor}' />";
             }
             $strXml .= '</graph>';
-
             $strNmFileXml = md5(date('Ymd_His')) . '.xml';
             file_put_contents(__APP__ . '/data/xml/' . $strNmFileXml, $strXml);
             echo Zend_Json_Encoder::encode( array('pathXml' => $strNmFileXml));

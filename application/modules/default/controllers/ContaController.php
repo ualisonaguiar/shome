@@ -34,7 +34,7 @@ class Default_ContaController extends Default_SegurancaController
                     unset($coContas[$k]);
                 }
             }
-            
+
             foreach ( $coContas as $k => $conta ) {
                 $coContas[$k]['nr_parcela'] = $this->quantidadeParcelas(
                     $conta['nr_parcela'], $conta['nomeConta']

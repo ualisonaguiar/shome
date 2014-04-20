@@ -8,6 +8,7 @@ class CronConta
      * @var type
      */
     private static $prazoData = 15;
+
     private static $qtdEnvioPermitido = 2;
 
     /**
@@ -22,15 +23,14 @@ class CronConta
     static function run()
     {
         $coLogContas = self::visualizeLogAtual();
-
-        if ( count($coLogContas) < self::$qtdEnvioPermitido ) {
+        if ( count($coLogContas) < self::$qtdEnvioPermitido )
+        {
             $nConta = new NDefault_ContaNegocio();
             $coContas = $nConta->listagemContaNaoPaga();
 
             if ( count($coContas) ) {
                 foreach ( $coContas as $contas ) {
                     $dias = self::validaData($contas['dataVencimento']);
-
                     if ( $dias < 0 || $dias <= self::$prazoData ) {
                         self::preparaMensagem($contas, $dias);
                     }
@@ -68,7 +68,6 @@ class CronConta
     static protected function disparaEmail()
     {
         $aEmaisl = self::$aMensagem;
-
         try {
             foreach ( $aEmaisl as $email => $mensagens ) {
                 $sMensagem = '';
@@ -77,9 +76,12 @@ class CronConta
                 }
 
                 NDefault_MensagemNegocio::enviarEmail(
-                    $sMensagem, 'Contas vencidas ou à vencer', array($email)
+                    $sMensagem,
+                    'Contas vencidas ou à vencer',
+                    array($email)
                 );
             }
+            self::$aMensagem = $sMensagem;
         } catch ( Zend_Exception $exc ) {
             throw new Zend_Exception($exc->getMessage());
         }
@@ -101,14 +103,17 @@ class CronConta
         $coUsuario = $coUsuario[0];
 
         if ( $dias < 0 ) {
-            self::$aMensagem[$coUsuario['ds_email']][] = "Conta " .
-                $nomConta . ', ' . $nomEmpre .
-                ' - encontra-se vencida desde o dia: ' . $datVenc;
+            $strFraseEmail  = "Conta " . $nomConta . ', ' . $nomEmpre;
+            $strFraseEmail .= ' - encontra-se vencida desde o dia: ' . $datVenc;
         } elseif ( $dias >= 0 && $dias <= self::$prazoData ) {
-            self::$aMensagem[$coUsuario['ds_email']][] = "Conta " .
-                $nomConta . ', ' . $nomEmpre .
-                ' - vencerá daqui: ' . $dias . ' dias';
+            $strFraseEmail  = "Conta " .$nomConta . ', ' . $nomEmpre;
+            if ($dias == 0) {
+                $strFraseEmail .= ' - vencerá daqui: ' . $dias . ' dias';
+            } else {
+                $strFraseEmail .= ' - vencendo hoje';
+            }
         }
+        self::$aMensagem[$coUsuario['ds_email']][] = $strFraseEmail;
     }
 
     /**
@@ -133,7 +138,13 @@ class CronConta
     static function registraLog()
     {
         $db = Zend_Db_Table::getDefaultAdapter();
-        $db->insert('admin.log_cron', array('tipo_cron' => 'conta'));
+        $db->insert(
+            'admin.log_cron',
+            array(
+                'tipo_cron' => 'conta',
+                'conteudo' => self::$aMensagem
+            )
+        );
     }
 
 }

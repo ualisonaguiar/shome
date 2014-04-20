@@ -35,7 +35,7 @@ class NDefault_RelatorioNegocio extends PDefault_Models_Conta
             ->where('dat_vencimento >= ?', $strDatInicio)
             ->where('dat_vencimento <= ?', $strDatFim)
             ->group(array ('datVencimento'))
-            
+            ->order('datVencimento asc')
             ->query();
         return $query->fetchAll();
     }

@@ -167,7 +167,7 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
             ->joinInner(
                 array(
                 'pj' => 'pessoa.pessoa_juridica'
-                ), 'c.chv_entidade = pj.chv_pessoa_juridica', array('pj' => 'nom_pessoa')
+                ), 'c.chv_entidade = pj.chv_pessoa_juridica', array('pj' => 'nom_fantasia')
             )
             ->joinInner(
                 array(
@@ -248,24 +248,27 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
 
         $sql = $objDb->select()
             ->from(
-                array(
-                'cf' => $this->_schema . '.conta_arquivo'
-                ), array(
-                'tipoConta' => new Zend_Db_Expr(
-                    "CASE WHEN tipo_arquivo = '1'
-                            THEN 'Fatura'  ELSE 'Recibo' end"
-                )
-                )
+                    array(
+                        'cf' => $this->_schema . '.conta_arquivo'
+                    ),
+                    array(
+                        'tipoConta' => new Zend_Db_Expr(
+                            "CASE WHEN tipo_arquivo = '1'"
+                            . "THEN 'Fatura'  ELSE 'Recibo' end"
+                        )
+                    )
             )
             ->joinInner(
                 array(
-                'a' => 'file'
-                ), 'a.chv_file = cf.chv_arquivo', array(
-                'a.nm_file', 'a.caminho_file',
-                'a.extensao_file', 'a.md5', 'a.size_file',
-                'dat_inclusao' =>
-                "to_char(dat_inclusao, 'DD/MM/YYYY HH24:MI:SS')",
-                'chv_file'
+                    'a' => 'file'
+                ),
+                'a.chv_file = cf.chv_arquivo',
+                array(
+                    'a.nm_file', 'a.caminho_file',
+                    'a.extensao_file', 'a.md5', 'a.size_file',
+                    'dat_inclusao' =>
+                    "to_char(dat_inclusao, 'DD/MM/YYYY HH24:MI:SS')",
+                    'chv_file'
                 )
             )
             ->where('cf.chv_conta = ?', $chvConta)
@@ -390,7 +393,7 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
                 ),
                 'c.chv_entidade = pj.chv_pessoa_juridica',
                 array(
-                    'pj' => 'nom_pessoa', 'chv_pessoa_juridica'
+                    'pj' => 'nom_fantasia', 'chv_pessoa_juridica'
                 )
             )
             ->joinInner(
@@ -407,7 +410,7 @@ class NDefault_ContaNegocio extends PDefault_Models_Conta
                 )
             )
             ->order(array('dataVencimento', 'cd.nr_parcela'));
-        
+
         //Filtros
         if ( !empty($aFiltro['chv_tp_conta']) ) {
             $queryBanco->where('c.chv_tp_conta = ?', $aFiltro['chv_tp_conta']);
