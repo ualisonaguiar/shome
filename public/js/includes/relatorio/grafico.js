@@ -16,10 +16,12 @@ Avaliador.pesquisarRelatorio = function() {
 };
 
 Avaliador.plotaGrafico = function(strPathXml) {
-    var chart = new FusionCharts(baseUrl + "/public/js/library/FusionCharts/Charts/FCF_Line.swf", "ChartId", "1300", "350");
+    var chart = new FusionCharts(baseUrl + "/public/library/FusionCharts/Charts/FCF_Line.swf", "ChartId", "1300", "350");
     chart.setDataURL(baseUrl + '/data/xml/' + strPathXml);
     chart.render("graficoBarra");
-    setTimeout(function() {Avaliador.excluirArquivoXml(strPathXml);},3000);
+    setTimeout(function() {
+        Avaliador.excluirArquivoXml(strPathXml);
+    }, 3000);
 };
 
 Avaliador.excluirArquivoXml = function(strPathXml) {
@@ -31,7 +33,7 @@ Avaliador.excluirArquivoXml = function(strPathXml) {
         url: baseUrl + '/relatorio/excluir-arquivo-xml',
         dataType: 'json',
         success: function(response) {
-            
+
         }
     });
 };
